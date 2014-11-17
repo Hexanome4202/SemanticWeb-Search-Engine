@@ -1,0 +1,9 @@
+﻿http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://rdf.freebase.com/ns/m.014cnc
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://fr.dbpedia.org/resource/Étudiant
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://de.dbpedia.org/resource/Student
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://wikidata.dbpedia.org/resource/Q48282
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://cs.dbpedia.org/resource/Student
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://es.dbpedia.org/resource/Estudiante
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://eu.dbpedia.org/resource/Ikasle
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://id.dbpedia.org/resource/Peserta_didik
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://it.dbpedia.org/resource/Studente
