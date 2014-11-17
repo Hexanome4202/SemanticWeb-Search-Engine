@@ -27,15 +27,11 @@ public class Entities {
 				urlTexts.put(doublet.get("link").toString(), doublet.get("text").toString());
 			}
 			
+			
 		} catch (IOException ie) {
-			System.out.println("File error : not found");
+			System.out.println(ie);
 		} catch (ParseException pe) {
-			System.out.println("position: " + pe.getPosition());
 			System.out.println(pe);
-		} 
-		
-		
+		}	
 	}
-	
-	
 }
