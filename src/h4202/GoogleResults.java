@@ -1,6 +1,7 @@
 package h4202;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -16,20 +17,28 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class GoogleResults {
-	private static String API_KEY = "AIzaSyD4vwwD8HzF1NLbhE04U0td5NOmH1NYwpw";
-	private static String URL_QUERY = "https://www.googleapis.com/customsearch/v1";
+	private static final String GOOGLE_API_KEY = "AIzaSyD4vwwD8HzF1NLbhE04U0td5NOmH1NYwpw";
+	private static final String GOOGLE_URL_QUERY = "https://www.googleapis.com/customsearch/v1";
+	
+	private static final String ALCHEMY_API_KEY = "85c049ad20d7b445086d6f8aa0e738660f232f9c";
+	private static final String ALCHEMY_URL_QUERY = "http://access.alchemyapi.com/calls/url/URLGetText?";
 	
 	public static void main(String[] args) {
-		System.out.println(getElements(search("obama")));
+		save("test.json", getElements(search("obama")));
 	}
 	
+	/**
+	 * TODO: Créer moteur de recherche et changer ID du moteur
+	 * @param keywords
+	 * @return
+	 */
 	public static String search(String keywords) {
 		URL url;
 		String text = "";
 		 
 		try {
 			// get URL content
-			url = new URL(URL_QUERY + "?key=" + API_KEY + "&cx=017576662512468239146:omuauf_lfve&q=" + keywords);
+			url = new URL(GOOGLE_URL_QUERY + "?key=" + GOOGLE_API_KEY + "&cx=015624405265777598503:nlbkiqyhteg&q=" + keywords);
 			URLConnection conn = url.openConnection();
  
 			// open the stream and put it into BufferedReader
@@ -59,6 +68,7 @@ public class GoogleResults {
 	public static List<GoogleElement> getElements(String json) {
 		JSONParser parser = new JSONParser();
 		List<GoogleElement> elements = new ArrayList<GoogleElement>();
+		String link;
 		
 		Object obj;
 		try {
@@ -69,7 +79,9 @@ public class GoogleResults {
 			JSONArray links = (JSONArray) jsonObject.get("items");
 			Iterator<JSONObject> iterator = links.iterator();
 			while (iterator.hasNext()) {
-				elements.add(new GoogleElement(iterator.next().get("link").toString(), ""));
+				link = iterator.next().get("link").toString();
+				if(!link.contains(".pdf"))
+					elements.add(new GoogleElement(link, getTextFromPage(link)));
 			}
 			
 		} catch (ParseException e) {
@@ -79,8 +91,80 @@ public class GoogleResults {
 		
 		return elements;
 	}
-	
+	/**
+	 * 
+	 * @param link
+	 * @return the text from the html web page
+	 */
 	public static String getTextFromPage(String link) {
+		
+		URL url;
+		String json = "";
+		JSONParser parser = new JSONParser();
+		 
+		try {
+			// get URL content
+			url = new URL(ALCHEMY_URL_QUERY + "apikey=" + ALCHEMY_API_KEY + "&url=" + link + "&outputMode=json");
+			URLConnection conn = url.openConnection();
+ 
+			// open the stream and put it into BufferedReader
+			BufferedReader br = new BufferedReader(
+                               new InputStreamReader(conn.getInputStream()));
+			String inputLine;
+ 
+			while ((inputLine = br.readLine()) != null) {
+				json += inputLine;
+			}
+			br.close();
+ 
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+	 
+			Object obj = parser.parse(json);
+	 
+			JSONObject jsonObject = (JSONObject) obj;
+	 
+			String text = (String) jsonObject.get("text");
+			return text;
+	 
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 		return "";
 	}
+	
+	/**
+	 * 
+	 * @param filename
+	 * @param elements
+	 * desc : save link and text in json form for each page in a file 
+	 */
+	public static void save(String filename, List<GoogleElement> elements) {
+		JSONArray list = new JSONArray();
+		JSONObject elem;
+		GoogleElement element;
+		for(int i = 0; i < elements.size(); ++i) {
+			elem = new JSONObject();
+			element = elements.get(i);
+			elem.put("link", element.getLink());
+			elem.put("text", element.getText());
+			list.add(elem);
+		}
+	 
+		try {
+			FileWriter file = new FileWriter(filename);
+			file.write("{\"pages\":" + list.toJSONString() + "}");
+			file.flush();
+			file.close();
+	 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	 }
 }
