@@ -18,10 +18,4 @@ public class GoogleElement {
 	public String getText() {
 		return text;
 	}
-	
-	// Method(s)
-	@Override
-	public String toString() {
-		return this.link + " " + this.text;
-	}
 }
