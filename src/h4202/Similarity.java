@@ -6,35 +6,78 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class Similarity {
-	private static ArrayList<SortedSet<String>> listFiles = new ArrayList<SortedSet<String>>();
+	
+	/**
+	 * A map with the URL of the page as key and a set with the ??? as value
+	 */
+	private Map<String,SortedSet<String>> mapFiles = new HashMap<String,SortedSet<String>>();
+	/**
+	 * An array list with all the arcs between the different URLs (similarity between the two pages as arc value)
+	 */
+	private ArrayList<SimilarityArc> similarityList = new ArrayList<SimilarityArc>();
 
+/**
+ * 
+ * @param args
+ */
 	public static void main(String[] args) {
-		readAll();
+		
+		Similarity sim = new Similarity();
+		sim.readAll();		
+		sim.fillSimilarityList();
+		
+		for(SimilarityArc a : sim.getSimilarityList()){
+			
+			System.out.println(a);
+		}
 
 	}
-
-	private static SortedSet<String> readFile(String path) throws IOException {
+	
+	
+	/**
+	 * Default constructor
+	 */
+	public Similarity(){
+		
+	}
+	/**
+	 * 
+	 * @param path
+	 * @throws IOException
+	 */
+	private void readFile(String path) throws IOException {
+		
 		FileInputStream fis = new FileInputStream(path);
-
-		// Construct BufferedReader from InputStreamReader
-		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis, "UTF8")); //Pas de probleme avec les ???, les strings sont bien formees
 
 		String line = null;
 		SortedSet<String> set = new TreeSet<String>();
+		int i = 0;
+		String url = "";
+		
 		while ((line = br.readLine()) != null) {
-			set.add(line);
-			System.out.println(line);
+			if(i==0){
+				url = line;
+			}else{
+				set.add(line);
+			}
+			i++;
 		}
 		br.close();
-		return set;
+		mapFiles.put(url, set);
 	}
 
-	public static void readAll() {
+	/**
+	 * Calls the readFile method for every text file in the current folder
+	 */
+	public void readAll() {
 
 		File folder = new File(".");
 		File[] listOfFiles = folder.listFiles();
@@ -43,7 +86,7 @@ public class Similarity {
 			File file = listOfFiles[i];
 			if (file.isFile() && file.getName().endsWith(".txt")) {
 				try {
-					listFiles.add(readFile(file.getCanonicalPath()));
+					readFile(file.getCanonicalPath());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -52,13 +95,25 @@ public class Similarity {
 		}
 	}
 
-	public static <T> Set<T> union(Set<T> setA, Set<T> setB) {
+	/**
+	 * 
+	 * @param setA
+	 * @param setB
+	 * @return
+	 */
+	public <T> Set<T> union(Set<T> setA, Set<T> setB) {
 		Set<T> tmp = new TreeSet<T>(setA);
 		tmp.addAll(setB);
 		return tmp;
 	}
 
-	public static <T> Set<T> intersection(Set<T> setA, Set<T> setB) {
+	/**
+	 * 
+	 * @param setA
+	 * @param setB
+	 * @return
+	 */
+	public <T> Set<T> intersection(Set<T> setA, Set<T> setB) {
 		Set<T> tmp = new TreeSet<T>();
 		for (T x : setA)
 			if (setB.contains(x))
@@ -66,10 +121,45 @@ public class Similarity {
 		return tmp;
 	}
 	
-	public static <T> double similarity(Set<T> setA, Set<T> setB){
+	/**
+	 * 
+	 * @param setA
+	 * @param setB
+	 * @return
+	 */
+	public <T> Double similarityCalcul(Set<T> setA, Set<T> setB){
+		double i = intersection(setA,setB).size();
+		double u = union(setA, setB).size();
+		Double d = i/u;
+		return d;
+	}
+
+	/**
+	 * 
+	 */
+	public void fillSimilarityList(){
 		
-		
-		return 0;
+		for(Map.Entry<String,SortedSet<String>> FirstEntry : mapFiles.entrySet()){
+			
+			String firstURL = FirstEntry.getKey();
+			SortedSet<String> pagesFirst = FirstEntry.getValue();
+			
+			for(Map.Entry<String,SortedSet<String>> SecondEntry : mapFiles.entrySet()){
+				
+				String secondURL = SecondEntry.getKey();
+				SortedSet<String> pagesSecond = SecondEntry.getValue();
+				
+				similarityList.add(new SimilarityArc(firstURL, secondURL,similarityCalcul(pagesFirst, pagesSecond)));
+			}
+		}
+	}
+	
+	public Map<String, SortedSet<String>> getMapFiles() {
+		return mapFiles;
+	}
+	
+	public ArrayList<SimilarityArc> getSimilarityList() {
+		return similarityList;
 	}
 
 }
