@@ -13,59 +13,62 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class Similarity {
-	
+
 	/**
 	 * A map with the URL of the page as key and a set with the ??? as value
 	 */
-	private Map<String,SortedSet<String>> mapFiles = new HashMap<String,SortedSet<String>>();
+	private Map<String, SortedSet<String>> mapFiles = new HashMap<String, SortedSet<String>>();
 	/**
-	 * An array list with all the arcs between the different URLs (similarity between the two pages as arc value)
+	 * An array list with all the arcs between the different URLs (similarity
+	 * between the two pages as arc value)
 	 */
 	private ArrayList<SimilarityArc> similarityList = new ArrayList<SimilarityArc>();
 
-/**
- * 
- * @param args
- */
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		
+
 		Similarity sim = new Similarity();
-		sim.readAll();		
+		sim.readAll();
 		sim.fillSimilarityList();
-		
-		for(SimilarityArc a : sim.getSimilarityList()){
-			
+
+		for (SimilarityArc a : sim.getSimilarityList()) {
+
 			System.out.println(a);
 		}
 
 	}
-	
-	
+
 	/**
 	 * Default constructor
 	 */
-	public Similarity(){
-		
+	public Similarity() {
+
 	}
+
 	/**
 	 * 
 	 * @param path
 	 * @throws IOException
 	 */
 	private void readFile(String path) throws IOException {
-		
+
 		FileInputStream fis = new FileInputStream(path);
-		BufferedReader br = new BufferedReader(new InputStreamReader(fis, "UTF8")); //Pas de probleme avec les ???, les strings sont bien formees
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis,
+				"UTF8")); // Pas de probleme avec les ???, les strings sont bien
+							// formees
 
 		String line = null;
 		SortedSet<String> set = new TreeSet<String>();
 		int i = 0;
 		String url = "";
-		
+
 		while ((line = br.readLine()) != null) {
-			if(i==0){
+			if (i == 0) {
 				url = line;
-			}else{
+			} else {
 				set.add(line);
 			}
 			i++;
@@ -109,9 +112,9 @@ public class Similarity {
 
 	/**
 	 * 
-	 * @param setA
-	 * @param setB
-	 * @return
+	 * @param setA the first set
+	 * @param setB the second set
+	 * @return the intersection of the two set
 	 */
 	public <T> Set<T> intersection(Set<T> setA, Set<T> setB) {
 		Set<T> tmp = new TreeSet<T>();
@@ -120,44 +123,47 @@ public class Similarity {
 				tmp.add(x);
 		return tmp;
 	}
-	
+
 	/**
 	 * 
-	 * @param setA
-	 * @param setB
-	 * @return
+	 * @param setA the first set
+	 * @param setB the second set
+	 * @return the union of the two sets
 	 */
-	public <T> Double similarityCalcul(Set<T> setA, Set<T> setB){
-		double i = intersection(setA,setB).size();
+	public <T> Double similarityCalcul(Set<T> setA, Set<T> setB) {
+		double i = intersection(setA, setB).size();
 		double u = union(setA, setB).size();
-		Double d = i/u;
+		Double d = i / u;
 		return d;
 	}
 
 	/**
 	 * 
 	 */
-	public void fillSimilarityList(){
-		
-		for(Map.Entry<String,SortedSet<String>> FirstEntry : mapFiles.entrySet()){
-			
+	public void fillSimilarityList() {
+
+		for (Map.Entry<String, SortedSet<String>> FirstEntry : mapFiles
+				.entrySet()) {
+
 			String firstURL = FirstEntry.getKey();
 			SortedSet<String> pagesFirst = FirstEntry.getValue();
-			
-			for(Map.Entry<String,SortedSet<String>> SecondEntry : mapFiles.entrySet()){
-				
+
+			for (Map.Entry<String, SortedSet<String>> SecondEntry : mapFiles
+					.entrySet()) {
+
 				String secondURL = SecondEntry.getKey();
 				SortedSet<String> pagesSecond = SecondEntry.getValue();
-				
-				similarityList.add(new SimilarityArc(firstURL, secondURL,similarityCalcul(pagesFirst, pagesSecond)));
+
+				similarityList.add(new SimilarityArc(firstURL, secondURL,
+						similarityCalcul(pagesFirst, pagesSecond)));
 			}
 		}
 	}
-	
+
 	public Map<String, SortedSet<String>> getMapFiles() {
 		return mapFiles;
 	}
-	
+
 	public ArrayList<SimilarityArc> getSimilarityList() {
 		return similarityList;
 	}
