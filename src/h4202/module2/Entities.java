@@ -6,12 +6,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -32,37 +32,32 @@ public class Entities {
 			for(int i=0; i < pages.size(); i++){
 				JSONObject doublet = (JSONObject)pages.get(i);
 				
-				Set<String> uris = new HashSet<String>();
+				Set<String> uris = getEntities(doublet.get("text").toString());
 				
-				//TODO prendre le texte et trouver les entités associées
 				//TODO pour chaque entité -> relaxer le graphe
 				
 				entities.put(doublet.get("link").toString(), uris);
 			}
 			
-			
 		} catch (IOException ie) {
 			System.out.println(ie);
 		} catch (ParseException pe) {
 			System.out.println(pe);
-		}	
-		
-		getEntities(" ");
+		}
 	}
 	
 	public static Set<String> getEntities(String text){
-		//TODO clean text
-		String cleanText = "President%20Michelle%20Obama%20called%20Thursday%20on%20Congress%20to%20extend%20a%20tax%20break%20for%20students%20included%20in%20last%20year%27s%20economic%20stimulus%20package,%20arguing%20that%20the%20policy%20provides%20more%20generous%20assistance.";
+		Set<String> result = new HashSet<String>();
+		
 		String confidence = "0.2";
 		String support = "20";
-		
 		String params = "&confidence="+ confidence +"&support=" + support;
 		
 		try {
-			String result = "";
+			String spotlightResult = "";
+			URI uri = new URI("http","//spotlight.dbpedia.org/rest/annotate?text="+text+params,null);
 			// get URL content
-			URL url = new URL("http://spotlight.dbpedia.org/rest/annotate?text="+ cleanText + params);
-			URLConnection conn = url.openConnection();
+			URLConnection conn = uri.toURL().openConnection();
 			conn.setRequestProperty("Accept", "application/json");
  
 			// open the stream and put it into BufferedReader
@@ -71,18 +66,28 @@ public class Entities {
 			String inputLine;
  
 			while ((inputLine = br.readLine()) != null) {
-				result += inputLine;
+				spotlightResult += inputLine;
 			}
 			br.close();
 			
-			System.out.println(result);
+			JSONParser parser = new JSONParser();
+			
+			JSONObject obj = (JSONObject) parser.parse(spotlightResult);
+			JSONArray resources = (JSONArray) obj.get("Resources");
+			for(int i=0; i < resources.size(); i++){
+				result.add((((JSONObject)resources.get(i)).get("@URI")).toString());
+			}
  
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
 		}
 		
-		return null;
+		return result;
 	}
 }
