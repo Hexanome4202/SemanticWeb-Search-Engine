@@ -24,21 +24,25 @@ public class GoogleResults {
 	private static final String ALCHEMY_URL_QUERY = "http://access.alchemyapi.com/calls/url/URLGetText?";
 	
 	public static void main(String[] args) {
-		save("test.json", getElements(search("obama")));
+		save("test.json", getElements(search("barack obama", 1)));
 	}
 	
 	/**
-	 * TODO: Créer moteur de recherche et changer ID du moteur
-	 * @param keywords
+	 * @param keywords used for the google search
+	 * @param pageNum number of the result page
 	 * @return
 	 */
-	public static String search(String keywords) {
+	public static String search(String keywords, int pageNum) {
 		URL url;
 		String text = "";
-		 
+		int startIndex = (pageNum - 1) * 10 + 1;
+		// TODO: change?
+		if(startIndex > 100) startIndex = 1;
+		keywords = keywords.replace(" ", "%20");
+		
 		try {
 			// get URL content
-			url = new URL(GOOGLE_URL_QUERY + "?key=" + GOOGLE_API_KEY + "&cx=015624405265777598503:nlbkiqyhteg&q=" + keywords);
+			url = new URL(GOOGLE_URL_QUERY + "?key=" + GOOGLE_API_KEY + "&cx=015624405265777598503:nlbkiqyhteg&q=" + keywords + "&start=" + startIndex + "&num=10");
 			URLConnection conn = url.openConnection();
  
 			// open the stream and put it into BufferedReader
@@ -56,7 +60,7 @@ public class GoogleResults {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		System.out.println(text);
 		return text;
 	}
 	
@@ -66,9 +70,12 @@ public class GoogleResults {
 	 * @return a Google element created with the html
 	 */
 	public static List<GoogleElement> getElements(String json) {
+		System.out.println("Début getElements");
 		JSONParser parser = new JSONParser();
 		List<GoogleElement> elements = new ArrayList<GoogleElement>();
 		String link;
+		String text;
+		String snippet;
 		
 		Object obj;
 		try {
@@ -79,16 +86,21 @@ public class GoogleResults {
 			JSONArray links = (JSONArray) jsonObject.get("items");
 			Iterator<JSONObject> iterator = links.iterator();
 			while (iterator.hasNext()) {
-				link = iterator.next().get("link").toString();
-				if(!link.contains(".pdf"))
-					elements.add(new GoogleElement(link, getTextFromPage(link)));
+				jsonObject = iterator.next();
+				link = jsonObject.get("link").toString();
+				if(!link.contains(".pdf")) {
+					text = getTextFromPage(link);
+					snippet = jsonObject.get("snippet").toString();
+					if(text != "")
+						elements.add(new GoogleElement(link, text + snippet));
+				}
 			}
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		System.out.println("Fin getElements");
 		return elements;
 	}
 	/**
@@ -167,4 +179,8 @@ public class GoogleResults {
 			e.printStackTrace();
 		}
 	 }
+	
+	public static String cleanText(String text) {
+		return text;
+	}
 }
