@@ -142,21 +142,29 @@ public class Similarity {
 	 */
 	public void fillSimilarityList() {
 
+		int i = 0;
 		for (Map.Entry<String, SortedSet<String>> FirstEntry : mapFiles
 				.entrySet()) {
 
-			String firstURL = FirstEntry.getKey();
-			SortedSet<String> pagesFirst = FirstEntry.getValue();
-
+			
+			String firstURL;
+			SortedSet<String> pagesFirst;
+				firstURL = FirstEntry.getKey();
+				pagesFirst = FirstEntry.getValue();
+				
+			int j=0;
 			for (Map.Entry<String, SortedSet<String>> SecondEntry : mapFiles
 					.entrySet()) {
-
-				String secondURL = SecondEntry.getKey();
-				SortedSet<String> pagesSecond = SecondEntry.getValue();
-
-				similarityList.add(new SimilarityArc(firstURL, secondURL,
-						similarityCalcul(pagesFirst, pagesSecond)));
+//				il faut encore voir le seuil
+				if (j!=0 && j>i) {
+					String secondURL = SecondEntry.getKey();
+					SortedSet<String> pagesSecond = SecondEntry.getValue();
+					similarityList.add(new SimilarityArc(firstURL, secondURL,
+							similarityCalcul(pagesFirst, pagesSecond)));
+				}
+				j++;
 			}
+			i++;
 		}
 	}
 
