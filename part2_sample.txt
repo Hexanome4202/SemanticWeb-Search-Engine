@@ -1,6 +1,6 @@
 http://www.prout.com
 http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://rdf.freebase.com/ns/m.014cnc
-http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://fr.dbpedia.org/resource/Étudiant
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://fr.dbpedia.org/resource/Ã‰tudiant
 http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://de.dbpedia.org/resource/Student
 http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://wikidata.dbpedia.org/resource/Q48282
 http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://cs.dbpedia.org/resource/Student

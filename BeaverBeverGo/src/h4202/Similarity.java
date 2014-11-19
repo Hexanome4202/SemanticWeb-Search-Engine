@@ -1,5 +1,9 @@
 package h4202;
 
+
+import h4202.module2.Triplet;
+import h4202.view.BeaverBeverGo;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +21,7 @@ public class Similarity {
 	/**
 	 * A map with the URL of the page as key and a set with the ??? as value
 	 */
-	private Map<String, SortedSet<String>> mapFiles = new HashMap<String, SortedSet<String>>();
+	private Map<String, SortedSet<Triplet>> mapFiles = new HashMap<String, SortedSet<Triplet>>();
 	/**
 	 * An array list with all the arcs between the different URLs (similarity
 	 * between the two pages as arc value)
@@ -31,6 +35,7 @@ public class Similarity {
 	public static void main(String[] args) {
 
 		Similarity sim = new Similarity();
+		BeaverBeverGo bv = new BeaverBeverGo();
 		sim.readAll();
 		sim.fillSimilarityList();
 
@@ -38,6 +43,10 @@ public class Similarity {
 
 			System.out.println(a);
 		}
+		String imageURL=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.IMAGE);
+		String label=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.LABEL);
+		System.out.println(imageURL);
+		System.out.println(label);
 
 	}
 
@@ -61,7 +70,7 @@ public class Similarity {
 							// formees
 
 		String line = null;
-		SortedSet<String> set = new TreeSet<String>();
+		SortedSet<Triplet> set = new TreeSet<Triplet>();
 		int i = 0;
 		String url = "";
 
@@ -69,7 +78,8 @@ public class Similarity {
 			if (i == 0) {
 				url = line;
 			} else {
-				set.add(line);
+				String[] triplet = line.split("\\s+");
+				set.add(new Triplet(triplet[0], triplet[1] , triplet[2]));
 			}
 			i++;
 		}
@@ -143,24 +153,28 @@ public class Similarity {
 	public void fillSimilarityList() {
 
 		int i = 0;
-		for (Map.Entry<String, SortedSet<String>> FirstEntry : mapFiles
+		for (Map.Entry<String, SortedSet<Triplet>> FirstEntry : mapFiles
 				.entrySet()) {
 
 			
 			String firstURL;
-			SortedSet<String> pagesFirst;
+			SortedSet<Triplet> pagesFirst;
 				firstURL = FirstEntry.getKey();
 				pagesFirst = FirstEntry.getValue();
 				
 			int j=0;
-			for (Map.Entry<String, SortedSet<String>> SecondEntry : mapFiles
+			for (Map.Entry<String, SortedSet<Triplet>> SecondEntry : mapFiles
 					.entrySet()) {
-//				il faut encore voir le seuil
+				
 				if (j!=0 && j>i) {
 					String secondURL = SecondEntry.getKey();
-					SortedSet<String> pagesSecond = SecondEntry.getValue();
-					similarityList.add(new SimilarityArc(firstURL, secondURL,
-							similarityCalcul(pagesFirst, pagesSecond)));
+					SortedSet<Triplet> pagesSecond = SecondEntry.getValue();
+					Double simIndex = similarityCalcul(pagesFirst, pagesSecond);
+					
+					if (simIndex>=0.0) { //seuil de 0, pas de seuil
+						similarityList.add(new SimilarityArc(firstURL,
+								secondURL, simIndex));
+					}
 				}
 				j++;
 			}
@@ -168,7 +182,7 @@ public class Similarity {
 		}
 	}
 
-	public Map<String, SortedSet<String>> getMapFiles() {
+	public Map<String, SortedSet<Triplet>> getMapFiles() {
 		return mapFiles;
 	}
 

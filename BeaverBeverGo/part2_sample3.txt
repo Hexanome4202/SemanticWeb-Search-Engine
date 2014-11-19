@@ -11,3 +11,5 @@ http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://
 http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://lt.dbpedia.org/resource/Studentas
 http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://lv.dbpedia.org/resource/Students
 http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://ml.dbpedia.org/resource/വിദ്യാർത്ഥി
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#thumbnail http://commons.wikimedia.org/wiki/Special:FilePath/Universität_Bologna_Deutsche_Nation.jpg?width=300
+http://dbpedia.org/resource/Student http://www.w3.org/2000/01/rdf-schema#label Student
