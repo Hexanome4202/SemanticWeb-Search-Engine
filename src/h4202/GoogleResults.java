@@ -33,6 +33,7 @@ public class GoogleResults {
 	 * @return
 	 */
 	public static String search(String keywords, int pageNum) {
+		System.out.println("Début search");
 		URL url;
 		String text = "";
 		int startIndex = (pageNum - 1) * 10 + 1;
@@ -60,12 +61,12 @@ public class GoogleResults {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(text);
+		System.out.println("Fin search");
 		return text;
 	}
 	
 	/**
-	 * 
+	 * TODO: Clean text
 	 * @param json
 	 * @return a Google element created with the html
 	 */
@@ -88,8 +89,9 @@ public class GoogleResults {
 			while (iterator.hasNext()) {
 				jsonObject = iterator.next();
 				link = jsonObject.get("link").toString();
+				link = link.replace("\\/", "/");
 				if(!link.contains(".pdf")) {
-					text = getTextFromPage(link);
+					text = getTextFromPage(link).replace("\\/", "/").replaceAll("\\s+", " ").replaceAll("\\\"", "").replaceAll("\\[.*?\\]", "");
 					snippet = jsonObject.get("snippet").toString();
 					if(text != "")
 						elements.add(new GoogleElement(link, text + snippet));
@@ -104,12 +106,12 @@ public class GoogleResults {
 		return elements;
 	}
 	/**
-	 * 
+	 * TODO: try to make it faster
 	 * @param link
 	 * @return the text from the html web page
 	 */
 	public static String getTextFromPage(String link) {
-		
+		System.out.println("Début getTextFromPage");
 		URL url;
 		String json = "";
 		JSONParser parser = new JSONParser();
@@ -147,7 +149,7 @@ public class GoogleResults {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+		System.out.println("Fin getTextFromPage");
 		return "";
 	}
 	
@@ -158,6 +160,7 @@ public class GoogleResults {
 	 * desc : save link and text in json form for each page in a file 
 	 */
 	public static void save(String filename, List<GoogleElement> elements) {
+		System.out.println("Début save");
 		JSONArray list = new JSONArray();
 		JSONObject elem;
 		GoogleElement element;
@@ -178,6 +181,7 @@ public class GoogleResults {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Fin save");
 	 }
 	
 	public static String cleanText(String text) {
