@@ -1,0 +1,13 @@
+http://www.teste.com
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://rdf.freebase.com/ns/m.014cnc
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://fr.dbpedia.org/resource/Étudiant
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://de.dbpedia.org/resource/Student
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://wikidata.dbpedia.org/resource/Q48282
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://cs.dbpedia.org/resource/Student
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://ka.dbpedia.org/resource/სტუდენტი
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://kk.dbpedia.org/resource/Студент
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://ky.dbpedia.org/resource/Студентчилик
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://ln.dbpedia.org/resource/Moyékoli
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://lt.dbpedia.org/resource/Studentas
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://lv.dbpedia.org/resource/Students
+http://dbpedia.org/resource/Student http://www.w3.org/2002/07/owl#sameAs http://ml.dbpedia.org/resource/വിദ്യാർത്ഥി
