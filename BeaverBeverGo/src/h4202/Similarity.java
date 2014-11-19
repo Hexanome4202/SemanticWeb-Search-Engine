@@ -50,12 +50,6 @@ public class Similarity {
 
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public Similarity() {
-
-	}
 
 	/**
 	 * 
@@ -92,7 +86,7 @@ public class Similarity {
 	 */
 	public void readAll() {
 
-		File folder = new File(".");
+		File folder = new File(".");//faire attention au chemin pour la partie web
 		File[] listOfFiles = folder.listFiles();
 
 		for (int i = 0; i < listOfFiles.length; i++) {
