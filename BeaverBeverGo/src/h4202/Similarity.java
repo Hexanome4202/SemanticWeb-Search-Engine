@@ -45,8 +45,10 @@ public class Similarity {
 		}
 		String imageURL=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.IMAGE);
 		String label=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.LABEL);
+		String desc=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.ABSTRACT);
 		System.out.println(imageURL);
 		System.out.println(label);
+		System.out.println(desc);
 
 	}
 

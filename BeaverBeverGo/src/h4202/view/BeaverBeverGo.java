@@ -9,6 +9,7 @@ public class BeaverBeverGo {
 	
 	public static final String IMAGE= "http://www.w3.org/2002/07/owl#thumbnail";
 	public static final String LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
+	public static final String ABSTRACT = "http://www.w3.org/2002/07/owl#abstract";
 	
 	public String searchForPredicate(Map<String, SortedSet<Triplet>> map, String predicate){
 		
