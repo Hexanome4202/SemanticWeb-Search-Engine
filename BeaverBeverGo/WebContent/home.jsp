@@ -10,7 +10,7 @@
 	<h1 style="color: blue; text-align: center">BeaverBeverGo</h1>
 	<img src="Beaver.jpg" alt="beaver_logo">
 
-	<form method="get" action="">
+	<form method="get" action="/ActionServlet">
 		<table>
 			<tr>
 				<td
