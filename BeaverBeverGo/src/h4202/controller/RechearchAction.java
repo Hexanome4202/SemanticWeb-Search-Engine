@@ -11,7 +11,6 @@ public class RechearchAction extends Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpSession session) {
-		// TODO Auto-generated method stub
 		
 		String keyWords=(String)session.getAttribute("keyWords");
 		

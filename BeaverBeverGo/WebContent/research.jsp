@@ -17,7 +17,7 @@
 			<input type="hidden" name="todo" value="research">
 				<td
 					style="border-style: solid none solid solid; border-color: #4B7B9F; border-width: 1px;">
-					<input type="text" name=""
+					<input type="text" id ="keyWords" name="keyWords"
 					style="width: 100px; border: 0px solid; height: 17px; padding: 0px 3px; position: relative;">
 				</td>
 				<td
