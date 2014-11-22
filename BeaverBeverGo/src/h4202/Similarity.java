@@ -51,22 +51,6 @@ public class Similarity {
 		System.out.println(desc);
 
 	}
-	
-	
-	
-
-	public Similarity() {}
-
-	/**
-	 * 
-	 * @param mapFiles map with the URL strings as keys and a set of triplets as value
-	 */
-	public Similarity(Map<String, SortedSet<Triplet>> mapFiles) {
-		this.mapFiles = mapFiles;
-		this.fillSimilarityList();
-	}
-
-
 
 
 	/**
