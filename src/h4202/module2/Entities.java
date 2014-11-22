@@ -12,9 +12,10 @@ import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -24,7 +25,7 @@ import org.json.simple.parser.ParseException;
 public class Entities {
 	public static void main(String[] args) {
 		
-		HashMap<String, Set<Triplet>> url_triplets = new HashMap<String, Set<Triplet>>();
+		HashMap<String, SortedSet<Triplet>> url_triplets = new HashMap<String, SortedSet<Triplet>>();
 		
 		// Parsing a JSON file -> WILL NOT BE USED AFTER
 		JSONParser parser = new JSONParser();
@@ -49,9 +50,9 @@ public class Entities {
 	 * @param array : the JSONArray containing all the pages' URL
 	 * @return the graph as a HashMap<url,triplets>
 	 */
-	public static HashMap<String, Set<Triplet>> getGraph(JSONArray array){
+	public static HashMap<String, SortedSet<Triplet>> getGraph(JSONArray array){
 		
-		HashMap<String, Set<Triplet>> url_triplets = new HashMap<String, Set<Triplet>>();
+		HashMap<String, SortedSet<Triplet>> url_triplets = new HashMap<String, SortedSet<Triplet>>();
 		
 		for(int i=0; i < array.size(); i++){
 			
@@ -61,9 +62,9 @@ public class Entities {
 			
 			Set<String> uris = getEntities(doublet.get("text").toString());				
 			
-			Set<Triplet> triplets = getTriplets(uris);
+			SortedSet<Triplet> triplets = getTriplets(uris);
 			
-			url_triplets.put(url, triplets);
+			url_triplets.put(url,triplets);
 		}
 		
 		return url_triplets;
@@ -74,8 +75,8 @@ public class Entities {
 	 * @param resources : set of URI's 
 	 * @return Set<Triplet> : all the triplets found (subject = URI given)
 	 */
-	public static Set<Triplet> getTriplets(Set<String> resources) {
-		Set<Triplet> triplets = new HashSet<Triplet>();		 
+	public static SortedSet<Triplet> getTriplets(Set<String> resources) {
+		SortedSet<Triplet> triplets = new TreeSet<Triplet>();		 
 				
 		String uris = "";
 		Iterator<String> it = resources.iterator();
@@ -153,8 +154,8 @@ public class Entities {
 	 * @param text : the text to analyze
 	 * @return Set<String> : a set of all the entities found
 	 */
-	public static Set<String> getEntities(String text){
-		Set<String> result = new HashSet<String>();
+	public static SortedSet<String> getEntities(String text){
+		SortedSet<String> result = new TreeSet<String>();
 		
 		String confidence = "0.2";
 		String support = "20";

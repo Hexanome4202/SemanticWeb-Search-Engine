@@ -19,9 +19,9 @@ import java.util.TreeSet;
 public class Similarity {
 
 	/**
-	 * A map with the URL of the page as key and a set with the ??? as value
+	 * A map with the URL of the page as key and a set with the triplets
 	 */
-	private Map<String, SortedSet<Triplet>> mapFiles = new HashMap<String, SortedSet<Triplet>>();
+	private Map<String, SortedSet<Triplet>> mapFiles;
 	/**
 	 * An array list with all the arcs between the different URLs (similarity
 	 * between the two pages as arc value)
@@ -50,6 +50,15 @@ public class Similarity {
 		System.out.println(label);
 		System.out.println(desc);
 
+	}
+
+
+	public Similarity(HashMap<String, SortedSet<Triplet>> hashMap) {
+		this.mapFiles = hashMap;
+	}
+
+	public Similarity() {
+		 mapFiles = new HashMap<String, SortedSet<Triplet>>();
 	}
 
 
