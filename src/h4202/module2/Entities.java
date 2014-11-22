@@ -33,7 +33,9 @@ public class Entities {
 			
 			JSONObject obj = (JSONObject) parser.parse(filereader);
 			
-			url_triplets = getGraph(obj);
+			JSONArray pages = (JSONArray) obj.get("pages");
+			
+			url_triplets = getGraph(pages);
 			
 		} catch (IOException ie) {
 			System.out.println(ie);
@@ -43,19 +45,17 @@ public class Entities {
 	}
 	
 	/**
-	 * Method that with a JSONObject, returns a Graph of URL/Triplets
-	 * @param object : the JSONObject containing all the pages' URL
+	 * Method that returns a Graph of URL/Triplets from a JSONArray
+	 * @param array : the JSONArray containing all the pages' URL
 	 * @return the graph as a HashMap<url,triplets>
 	 */
-	public static HashMap<String, Set<Triplet>> getGraph(JSONObject object){
+	public static HashMap<String, Set<Triplet>> getGraph(JSONArray array){
 		
 		HashMap<String, Set<Triplet>> url_triplets = new HashMap<String, Set<Triplet>>();
 		
-		JSONArray pages = (JSONArray) object.get("pages");
-		
-		for(int i=0; i < pages.size(); i++){
+		for(int i=0; i < array.size(); i++){
 			
-			JSONObject doublet = (JSONObject)pages.get(i);
+			JSONObject doublet = (JSONObject)array.get(i);
 		
 			String url = doublet.get("link").toString();
 			
