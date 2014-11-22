@@ -10,12 +10,13 @@
 	<h1 style="color: blue; text-align: center">BeaverBeverGo</h1>
 	<img src="Beaver.jpg" alt="beaver_logo">
 
-	<form method="get" action="">
+	<form method="get" action="/Test">
+		<input type="hidden" name="todo" value="search"/>
 		<table>
 			<tr>
 				<td
 					style="border-style: solid none solid solid; border-color: #4B7B9F; border-width: 1px;">
-					<input type="text" name=""
+					<input type="text" name="keyWords"
 					style="width: 100px; border: 0px solid; height: 17px; padding: 0px 3px; position: relative;">
 				</td>
 				<td

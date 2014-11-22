@@ -1,7 +1,5 @@
 package h4202.controller;
 
-import h4202.GoogleResults;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -31,14 +29,15 @@ public class ActionServlet extends HttpServlet {
 
 		// Both can be null /!\
 		String todo = request.getParameter("todo");
-		String keyWords = (String) session.getAttribute("keyWords");
+		String keyWords = request.getParameter("keyWords");
 		
-		this.setViewAndAction(todo);
+		this.setViewAndAction(todo, keyWords);
 
 		if(this.action != null) this.action.execute(request, session);
 
 		request.getRequestDispatcher(view).forward(request, response);
 
+		this.action = null;
 		out.close();
 	}
 
@@ -88,12 +87,14 @@ public class ActionServlet extends HttpServlet {
 		return "Short description";
 	}// </editor-fold>
 	
-	public void setViewAndAction(String todo) {
+	public void setViewAndAction(String todo, String keyWords) {
+		System.out.println(keyWords);
+		System.out.println(todo);
 		if(todo == null) {
-			return;
-		} else if("research".equals(todo)) {
+			this.view = "home.jsp";
+		} else if("search".equals(todo) && keyWords != null && !"".equals(keyWords)) {
 			this.view = "research.jsp";
-			action = new RechearchAction();
+			action = new ResearchAction();
 		} else {
 			this.view = "home.jsp";
 		}

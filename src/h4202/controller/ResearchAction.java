@@ -7,15 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
-public class RechearchAction extends Action {
+public class ResearchAction extends Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpSession session) {
+		String keyWords = request.getParameter("keyWords");
 		
-		String keyWords=(String)session.getAttribute("keyWords");
-		
-		GoogleResults.search("barack obama", 1);
-		//GoogleResults.save("results.json", GoogleResults.getElements(GoogleResults.search("barack obama", 1)));
+		// Search for keywords in the first page of google
+		GoogleResults.save("results.json", GoogleResults.getElements(GoogleResults.search(keyWords, 1)));
 
 		Similarity sim = new Similarity();
 		BeaverBeverGo bv = new BeaverBeverGo();
@@ -31,8 +30,6 @@ public class RechearchAction extends Action {
 		session.setAttribute("img", img);
 		session.setAttribute("label", label);
 		session.setAttribute("description", desc);
-		
-
 	}
 
 }
