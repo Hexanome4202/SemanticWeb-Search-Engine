@@ -1,0 +1,36 @@
+﻿Merge branch 'master' of https://github.com/Hexanome4202/SemanticWeb
+
+Conflicts:
+	.gitignore
+	BeaverBeverGo/src/h4202/action/Action.java
+	BeaverBeverGo/src/h4202/controller/Action.java
+	BeaverBeverGo/src/h4202/controller/ActionServlet.java
+	BeaverBeverGo/src/h4202/view/Action.java
+	BeaverBeverGo/src/h4202/view/RechearchAction.java
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 1 different commit each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#	modified:   .gitignore
+#	modified:   BeaverBeverGo/build/classes/h4202/Similarity.class
+#	modified:   BeaverBeverGo/build/classes/h4202/module2/Entities.class
+#	modified:   BeaverBeverGo/src/h4202/Similarity.java
+#	new file:   BeaverBeverGo/src/h4202/action/Action.java
+#	modified:   BeaverBeverGo/src/h4202/controller/ActionServlet.java
+#	new file:   BeaverBeverGo/src/h4202/view/RechearchAction.java
+#	new file:   WebContent/WEB-INF/web.xml
+#
+

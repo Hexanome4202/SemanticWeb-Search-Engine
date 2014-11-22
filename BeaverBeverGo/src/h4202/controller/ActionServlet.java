@@ -1,8 +1,8 @@
-/**
- * 
- */
 package h4202.controller;
 
+import h4202.action.Action;
+
+>>>>>>> dfe917ecececefce71b508d7542d01a612e493ea
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -90,5 +90,4 @@ public class ActionServlet extends HttpServlet {
 	    public String getServletInfo() {
 	        return "Short description";
 	    }// </editor-fold>
-
 }
