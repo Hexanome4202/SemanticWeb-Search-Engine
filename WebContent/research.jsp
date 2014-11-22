@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
-	import="h4202.view.BeaverBeverGo,h4202.module2.Triplet,h4202.Similarity"%>
+	import="h4202.controller.BeaverBeverGo,h4202.module2.Triplet,h4202.Similarity"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
