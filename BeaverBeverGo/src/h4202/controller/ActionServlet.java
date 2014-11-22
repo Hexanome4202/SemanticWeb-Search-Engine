@@ -1,6 +1,6 @@
 package h4202.controller;
 
-import h4202.action.Action;
+import h4202.GoogleResults;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,12 +30,12 @@ public class ActionServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		
-		String view="/research.jsp";
+		String view="/home.jsp";
 		
-		Action action = null;
+//		Action action = new SearchAction();
+//		action.execute(request, session);
 		
-		//On met ici ce que nous on va faire
-		
+		GoogleResults.save("results.json", GoogleResults.getElements(GoogleResults.search("barack obama", 1)));
 		
 		request.getRequestDispatcher(view).forward(request, response);
 		

@@ -1,4 +1,4 @@
-package h4202;
+package h4202.model;
 
 public class GoogleElement {
 	private String link;
