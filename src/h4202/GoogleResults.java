@@ -26,7 +26,7 @@ public class GoogleResults {
 	private static final String ALCHEMY_URL_QUERY = "http://access.alchemyapi.com/calls/url/URLGetText?";
 	
 	public static void main(String[] args) {
-		save("test.json", getElements(search("barack obama", 1)));
+		save("search.json", createJSON(getElements(search("barack obama", 1))));
 	}
 	
 	/**
@@ -35,7 +35,6 @@ public class GoogleResults {
 	 * @return
 	 */
 	public static String search(String keywords, int pageNum) {
-		System.out.println("Début search");
 		URL url;
 		String text = "";
 		int startIndex = (pageNum - 1) * 10 + 1;
@@ -63,7 +62,6 @@ public class GoogleResults {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Fin search");
 		return text;
 	}
 	
@@ -73,7 +71,6 @@ public class GoogleResults {
 	 * @return a Google element created with the html
 	 */
 	public static List<GoogleElement> getElements(String json) {
-		System.out.println("Début getElements");
 		JSONParser parser = new JSONParser();
 		List<GoogleElement> elements = new ArrayList<GoogleElement>();
 		String link;
@@ -104,7 +101,6 @@ public class GoogleResults {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Fin getElements");
 		return elements;
 	}
 	/**
@@ -113,7 +109,6 @@ public class GoogleResults {
 	 * @return the text from the html web page
 	 */
 	public static String getTextFromPage(String link) {
-		System.out.println("Début getTextFromPage");
 		URL url;
 		String json = "";
 		JSONParser parser = new JSONParser();
@@ -151,18 +146,15 @@ public class GoogleResults {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Fin getTextFromPage");
 		return "";
 	}
 	
 	/**
-	 * 
-	 * @param filename
-	 * @param elements
-	 * desc : save link and text in json form for each page in a file 
+	 * Save google elements into JSON syntax
+	 * @param elements Google elements to save into JSON
+	 * @return list An element of type JSONArray containing all google elements
 	 */
-	public static void save(String filename, List<GoogleElement> elements) {
-		System.out.println("Début save");
+	public static JSONArray createJSON(List<GoogleElement> elements) {
 		JSONArray list = new JSONArray();
 		JSONObject elem;
 		GoogleElement element;
@@ -173,7 +165,16 @@ public class GoogleResults {
 			elem.put("text", element.getText());
 			list.add(elem);
 		}
-	 
+		
+		return list;
+	}
+	
+	/**
+	 * Save the JSON object into file
+	 * @param filename
+	 * @param list JSON list to save into file
+	 */
+	public static void save(String filename, JSONArray list) {	 
 		try {
 			FileWriter file = new FileWriter(filename);
 			file.write("{\"pages\":" + list.toJSONString() + "}");
@@ -183,7 +184,6 @@ public class GoogleResults {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Fin save");
 	 }
 	
 	public static String cleanText(String text) {

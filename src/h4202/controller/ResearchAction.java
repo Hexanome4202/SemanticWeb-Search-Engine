@@ -14,7 +14,7 @@ public class ResearchAction extends Action {
 		String keyWords = request.getParameter("keyWords");
 		
 		// Search for keywords in the first page of google
-		GoogleResults.save("results.json", GoogleResults.getElements(GoogleResults.search(keyWords, 1)));
+		GoogleResults.createJSON(GoogleResults.getElements(GoogleResults.search(keyWords, 1)));
 
 		Similarity sim = new Similarity();
 		BeaverBeverGo bv = new BeaverBeverGo();
