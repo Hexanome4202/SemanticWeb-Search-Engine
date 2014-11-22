@@ -1,8 +1,8 @@
 package h4202;
 
 
+import h4202.controller.BeaverBeverGo;
 import h4202.module2.Triplet;
-import h4202.view.BeaverBeverGo;
 
 import java.io.BufferedReader;
 import java.io.File;

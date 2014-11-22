@@ -1,4 +1,4 @@
-package h4202.view;
+package h4202.controller;
 
 import h4202.module2.Triplet;
 

@@ -1,4 +1,4 @@
-package h4202.view;
+package h4202.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

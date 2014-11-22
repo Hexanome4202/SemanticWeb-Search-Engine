@@ -10,7 +10,8 @@
 	<h1 style="color: blue; text-align: center">BeaverBeverGo</h1>
 	<img src="Beaver.jpg" alt="beaver_logo">
 
-	<form method="get" action="/ActionServlet">
+	<form method="get" action="./ActionServlet">
+	<input type="hidden" name="todo" value="research">
 		<table>
 			<tr>
 				<td
