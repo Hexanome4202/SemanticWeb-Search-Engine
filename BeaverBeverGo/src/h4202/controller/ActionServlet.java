@@ -1,8 +1,7 @@
 package h4202.controller;
 
-import h4202.action.Action;
+import h4202.GoogleResults;
 
->>>>>>> dfe917ecececefce71b508d7542d01a612e493ea
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -24,16 +23,28 @@ public class ActionServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	 protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	        HttpSession session= request.getSession(true);
-	        response.setContentType("text/html;charset=UTF-8");
-	        PrintWriter out = response.getWriter();
-	        
-	        String view="/home.jsp";
-	        
-	        Action action = null;
-	        
+
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ActionServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session= request.getSession(true);
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		
+		String view="/home.jsp";
+		
+//		Action action = new SearchAction();
+//		action.execute(request, session);
+		
+		GoogleResults.save("results.json", GoogleResults.getElements(GoogleResults.search("barack obama", 1)));
+		
 	        String todo=request.getParameter("todo");
 	        String keyWords=(String)session.getAttribute("keyWords");
 	        
@@ -48,7 +59,7 @@ public class ActionServlet extends HttpServlet {
 	        request.getRequestDispatcher(view).forward(request, response);
             
             out.close();
-	 }
+	}
 	   
 	 
 	 /**

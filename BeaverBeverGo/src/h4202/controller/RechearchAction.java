@@ -1,9 +1,11 @@
 package h4202.controller;
 
 import h4202.Similarity;
+import h4202.GoogleResults;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 
 public class RechearchAction extends Action {
 
@@ -12,6 +14,9 @@ public class RechearchAction extends Action {
 		// TODO Auto-generated method stub
 		
 		String keyWords=(String)session.getAttribute("keyWords");
+		
+		GoogleResults.search("barack obama", 1);
+		//GoogleResults.save("results.json", GoogleResults.getElements(GoogleResults.search("barack obama", 1)));
 
 		Similarity sim = new Similarity();
 		BeaverBeverGo bv = new BeaverBeverGo();
