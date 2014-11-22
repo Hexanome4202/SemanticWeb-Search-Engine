@@ -1,5 +1,7 @@
 package h4202;
 
+import h4202.model.GoogleElement;
+
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;

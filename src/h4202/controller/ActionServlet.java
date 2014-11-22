@@ -18,6 +18,8 @@ import javax.servlet.http.HttpSession;
  */
 
 public class ActionServlet extends HttpServlet {
+	protected String view;
+	protected Action action;
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,20 +29,13 @@ public class ActionServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 
+		// Both can be null /!\
 		String todo = request.getParameter("todo");
 		String keyWords = (String) session.getAttribute("keyWords");
 		
-		String view = "/home.jsp";
-		Action action = null;
+		this.setViewAndAction(todo);
 
-		GoogleResults.save("results.json", GoogleResults
-				.getElements(GoogleResults.search("barack obama", 1)));
-
-		if ("research".equals(todo)) {
-			action = new RechearchAction();
-			view = "/research.jsp";
-			action.execute(request, session);
-		}
+		if(this.action != null) this.action.execute(request, session);
 
 		request.getRequestDispatcher(view).forward(request, response);
 
@@ -92,4 +87,15 @@ public class ActionServlet extends HttpServlet {
 	public String getServletInfo() {
 		return "Short description";
 	}// </editor-fold>
+	
+	public void setViewAndAction(String todo) {
+		if(todo == null) {
+			return;
+		} else if("research".equals(todo)) {
+			this.view = "research.jsp";
+			action = new RechearchAction();
+		} else {
+			this.view = "home.jsp";
+		}
+	}
 }

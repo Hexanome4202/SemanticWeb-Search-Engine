@@ -158,15 +158,4 @@ public class Entities {
 		return result;
 	}
 	
-	public class Triplet{
-		public String predicate;
-		public String subject;
-		public String object;
-		
-		public Triplet(String subject, String predicate, String object){
-			this.subject = subject;
-			this.object = object;
-			this.predicate = predicate;
-		}
-	}
 }
