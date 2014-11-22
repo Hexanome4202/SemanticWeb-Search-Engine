@@ -33,6 +33,7 @@ public class ResearchAction extends Action {
 		
 		System.out.println(img + "   " + label + "   " + desc);
 		
+		session.setAttribute("keyWords", keyWords);
 		session.setAttribute("img", img);
 		session.setAttribute("label", label);
 		session.setAttribute("description", desc);
