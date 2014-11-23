@@ -23,6 +23,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class Entities {
+	
+	private static int URI_LIMIT_SIZE = 3800; 
+	
 	public static void main(String[] args) {
 		
 		HashMap<String, SortedSet<Triplet>> url_triplets = new HashMap<String, SortedSet<Triplet>>();
@@ -59,8 +62,21 @@ public class Entities {
 			JSONObject doublet = (JSONObject)array.get(i);
 		
 			String url = doublet.get("link").toString();
+			SortedSet<String> uris = new TreeSet<String>();
 			
-			Set<String> uris = getEntities(doublet.get("text").toString());				
+			String text = doublet.get("text").toString();
+			int size=text.length();
+	
+			int nb = size/URI_LIMIT_SIZE;
+			if(size%URI_LIMIT_SIZE == 0)
+				nb -=1;
+			
+			for(int j=0; j<nb; j++){
+				String start_text = text.substring(0,URI_LIMIT_SIZE-1);
+				text = text.substring(URI_LIMIT_SIZE);
+				uris.addAll(getEntities(start_text));
+			}
+			uris.addAll(getEntities(text));
 			
 			SortedSet<Triplet> triplets = getTriplets(uris);
 			
@@ -93,7 +109,7 @@ public class Entities {
 			}
 
 		}
-		
+	
 		// run a sparql query to get the triplets
 		try {
 			String sparqlResult = "";
@@ -103,8 +119,7 @@ public class Entities {
 					+ uris 
 					+ "%29%29%0D%0AFILTER%28%3Fp+not+in+%28%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23sameAs%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageID%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageLength%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageModified%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageOutDegree%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageRevisionID%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageRevisionLink%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Falign%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fcaption%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fdirection%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FfooterAlign%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Frows%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageEditLink%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageExtracted%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FimageSize%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fimage%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FwikiPageUsesTemplate%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fwidth%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FheaderAlign%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FimageName%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fsignature%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FhasPhotoCollection%3E%2C+%3Chttp%3A%2F%2Fwww.georss.org%2Fgeorss%2Fpoint%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fbgcolor%3E%29%29%7D+&format=application%2Fsparql-results%2Bjson&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000&debug=on"
 					);
-			
-			
+
 			// get URL content
 			URLConnection conn = uri.toURL().openConnection();
  
@@ -183,8 +198,10 @@ public class Entities {
 			JSONParser parser = new JSONParser();
 			JSONObject obj = (JSONObject) parser.parse(spotlightResult);
 			JSONArray resources = (JSONArray) obj.get("Resources");
-			for(int i=0; i < resources.size(); i++){
-				result.add((((JSONObject)resources.get(i)).get("@URI")).toString());
+			if(resources != null){
+				for(int i=0; i < resources.size(); i++){
+					result.add((((JSONObject)resources.get(i)).get("@URI")).toString());
+				}
 			}
  
 		} catch (MalformedURLException e) {
