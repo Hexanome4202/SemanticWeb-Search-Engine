@@ -24,6 +24,7 @@ public class ThreadSearch implements Runnable {
 
 	@Override
 	public void run() {
+		System.out.println("début thread");
 		String link;
 		String text;
 		String snippet;
@@ -37,6 +38,7 @@ public class ThreadSearch implements Runnable {
 				elements[i] = new GoogleElement(link, text + snippet);
 		}
 		semaphore.release();
+		System.out.println("fin thread");
 	}
 
 }

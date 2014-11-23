@@ -45,7 +45,7 @@ public class ThreadedSearch extends Action {
 			Iterator<JSONObject> iterator = links.iterator();
 			while (iterator.hasNext()) {
 				jsonObject = iterator.next();
-				new ThreadSearch(jsonObject, elements, i, semaphore).run();
+				new Thread(new ThreadSearch(jsonObject, elements, i, semaphore)).start();
 				++i;
 			}
 			
@@ -53,6 +53,7 @@ public class ThreadedSearch extends Action {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("on attend");
 		try {
 			semaphore.acquire(10);
 		} catch (InterruptedException e) {
@@ -60,6 +61,7 @@ public class ThreadedSearch extends Action {
 			e.printStackTrace();
 			return;
 		}
+		System.out.println("C'est parti !!!");
 		List<GoogleElement> elems = Arrays.asList(elements);
 		JSONArray jsonArray = GoogleResults.createJSON(elems);
 //		long estimatedTime = System.nanoTime() - startTime;

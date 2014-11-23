@@ -94,8 +94,8 @@ public class ActionServlet extends HttpServlet {
 			this.view = "home.jsp";
 		} else if("search".equals(todo) && keyWords != null && !"".equals(keyWords)) {
 			this.view = "research.jsp";
-			this.action = new ResearchAction();
-			//this.action = new ThreadedSearch();
+			//this.action = new ResearchAction();
+			this.action = new ThreadedSearch();
 		} else {
 			this.view = "home.jsp";
 		}
