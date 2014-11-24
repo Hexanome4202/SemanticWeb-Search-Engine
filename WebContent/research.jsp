@@ -7,22 +7,22 @@
 <title>BeaverBeverGo</title>
 </head>
 <body>
-	<table>
+	<table align="center">
 		<tr>
-			<td><img src="Beaver.jpg" alt="beaver_logo"></td>
-			<td><h1 style="color: blue; text-align: center">BeaverBeverGo</h1></td>
+			<td> <img src="http://images.frandroid.com/wp-content/uploads/2014/01/bridgestone.jpg" style="border-style: ridge; border-width:5px; border-color:grey; width: 100px; height: auto;" alt="beaver_logo"> </td>
+			<td> <h1 style="color: green; text-align: center; padding: 25px 25px 25px 25px;"> BeaverBeverGo </h1> </td>
 
 			<form method="get" action="./ActionServlet">
 			<input type="hidden" name="todo" value="search">
-				<td
-					style="border-style: solid none solid solid; border-color: #4B7B9F; border-width: 1px;">
+				<td style="border-style: solid none solid solid; border-color: #4B7B9F; border-width: 1px;">
 					<input type="text" name="keyWords" id="keyWords" value="<% out.print(session.getAttribute("keyWords")); %>"
-					style="width: 100px; border: 0px solid; height: 17px; padding: 0px 3px; position: relative;">
+					style="width: 100px; border: 0px solid; height: 10px; padding: 0px 3px;">
 				</td>
-				<td
-					style="border-style: solid; border-color: #4B7B9F; border-width: 1px;"
-					colspan="3"><input type="submit" value=""
-					style="border-style: none; width: 24px; height: 20px;"></td>
+				<td style="border-style: solid; border-color: #4B7B9F; border-width: 1px;">
+					<input type="image" value=""
+					style="border-style: none; width: 24px; height: 20px;"
+					src="https://cdn3.iconfinder.com/data/icons/eightyshades/512/11_Search-128.png">
+				</td>
 			</form>
 		</tr>
 	</table>
