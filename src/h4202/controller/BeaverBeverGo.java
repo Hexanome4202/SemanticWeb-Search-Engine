@@ -1,13 +1,18 @@
 package h4202.controller;
 
+import h4202.model.ResultModel;
 import h4202.module2.Triplet;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class BeaverBeverGo {
+	
+	private static final Integer LIMIT_WORDS=150;
+
 	
 	public static final String IMAGE= "http://dbpedia.org/ontology/thumbnail";
 	public static final String LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
@@ -40,7 +45,6 @@ public class BeaverBeverGo {
 						}
 						
 					}
-					//System.out.println(t.toString());
 				}
 		}
 		return "";
@@ -65,9 +69,71 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 						}
 						
 					}
-					//System.out.println(t.toString());
 				}
 		}
 		return list;
 	}
+	public SortedSet<ResultModel> searchForResultList(Map<String, SortedSet<Triplet>> map, String keyWord){
+		
+		SortedSet<ResultModel> list = new TreeSet<ResultModel>();
+		
+		for (Map.Entry<String, SortedSet<Triplet>> Entry : map.entrySet()) {
+			
+			SortedSet<Triplet> tripletsSet = Entry.getValue();
+			for(Triplet t : tripletsSet){
+				String img="";
+				String desc="";
+				if (t.getPredicate().equals(BeaverBeverGo.LABEL)) {
+					String[] keys = keyWord.split("\\s+");
+					for (String s : keys)
+					{
+					  if (t.getSubject().toLowerCase().contains(s.toLowerCase()))
+					  {
+						  img=searchForSubjectPredicate(map, t.getSubject() , BeaverBeverGo.IMAGE, keyWord);
+						  desc=searchForSubjectPredicate(map, t.getSubject() , BeaverBeverGo.ABSTRACT, keyWord);
+						  String[] descriptionArray = desc.split("\\s+");
+						  String description="";
+							if (descriptionArray.length<=LIMIT_WORDS) {
+								description=desc;
+							} else {
+								for(int j=0;j<=LIMIT_WORDS;j++){
+									description=description+descriptionArray[j]+" ";
+								}
+								description=description+"...";
+							}
+						  list.add(new ResultModel(t.getObject(), img, description));
+					  }
+					}
+					
+				}
+			}
+	}
+		
+		return list;
+	}
+	
+public String searchForSubjectPredicate(Map<String, SortedSet<Triplet>> map,String subject, String predicate,String keyWord){
+		
+		
+		
+		for (Map.Entry<String, SortedSet<Triplet>> Entry : map.entrySet()) {
+			
+				SortedSet<Triplet> tripletsSet = Entry.getValue();
+				for(Triplet t : tripletsSet){
+					if (t.getPredicate().equals(predicate) && t.getSubject().equals(subject)) {
+						String[] keys = keyWord.split("\\s+");
+						for (String s : keys)
+						{
+						  if (t.getSubject().toLowerCase().contains(s.toLowerCase()))
+						  {
+							  	return t.getObject();
+						  }
+						}
+						
+					}
+				}
+		}
+		return "";
+	}
+
 }

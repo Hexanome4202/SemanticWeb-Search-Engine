@@ -2,7 +2,7 @@ package h4202.controller;
 
 import h4202.GoogleResults;
 import h4202.Similarity;
-import h4202.controller.ThreadSearch;
+import h4202.model.ResultModel;
 import h4202.module2.Triplet;
 
 import java.io.File;
@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.Semaphore;
 
@@ -85,31 +86,15 @@ public class ThreadedSearch extends Action {
 			// ----- PART II & III
 			Similarity sim = new Similarity(url_triplets);
 			BeaverBeverGo bv = new BeaverBeverGo();
-			//sim.readAll();
 			sim.fillSimilarityList();
-			String img = bv.searchForPredicate(sim.getMapFiles(),
-					BeaverBeverGo.IMAGE, keyWords);
-			String label = bv.searchForPredicate(sim.getMapFiles(),
-					BeaverBeverGo.LABEL, keyWords);
-			String desc = bv.searchForPredicate(sim.getMapFiles(),
-					BeaverBeverGo.ABSTRACT, keyWords);
-			String[] descriptionArray = desc.split("\\s+");
-			String description="";
-			if (descriptionArray.length<=LIMIT_WORDS) {
-				description=desc;
-			} else {
-				for(int j=0;j<=LIMIT_WORDS;j++){
-					description=description+descriptionArray[j]+" ";
-				}
-				description=description+"...";
+			
+			Set<ResultModel> rM=bv.searchForResultList(sim.getMapFiles(), keyWords);
+			for(ResultModel r : rM){
+				System.out.println(r.toString());
 			}
 			
-			//System.out.println(img + "   " + label + "   " + desc);
-			
 			session.setAttribute("keyWords", keyWords);
-			session.setAttribute("img", img);
-			session.setAttribute("label", label);
-			session.setAttribute("description", description);
+			session.setAttribute("resultsList", rM);
 		}
 	}
 	

@@ -1,6 +1,11 @@
+<%@page import="h4202.model.ResultModel"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@page import="java.util.List"%>
+<%@page import="java.util.SortedSet"%>
+<%@page import="java.util.TreeSet"%>
+<%@page import="h4202.model.ResultModel"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -31,29 +36,35 @@
 	</table>
 	
 	<table>
+		<%
+             SortedSet <ResultModel> list=(SortedSet <ResultModel>)session.getAttribute("resultsList"); 
+                    for(ResultModel s: list){ 
+		%>
 		<tr>
 
-			<td><img src="<%out.print(session.getAttribute("img"));%>" alt="" height="150"
+			<td><img src="<%out.print(s.getImgURL());%>" alt="" height="auto"
 				width="150"></td>
 			<td style="text-align: left; vertical-align: top; padding: 0">
 				<table>
 				<tr>
 					<h2>
 						<%
-						out.print(session.getAttribute("label"));
+						out.print(s.getLabel());
 						%>
 					</h2>
 				</tr>
 				<tr>
 					<p>
 						<%
-						out.print(session.getAttribute("description"));
+						out.print(s.getDescription());
 						%>
 					</p>
 				</tr>
+
 				</table>
 			</td>
 		</tr>
+		<%} %>
 	</table>
 
 </body>

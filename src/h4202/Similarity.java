@@ -176,7 +176,7 @@ public class Similarity {
 					SortedSet<Triplet> pagesSecond = SecondEntry.getValue();
 					Double simIndex = similarityCalcul(pagesFirst, pagesSecond);
 					
-					if (simIndex>=0.0) { //seuil de 0, pas de seuil
+					if (simIndex>=0.05) { //seuil
 						similarityList.add(new SimilarityArc(firstURL,
 								secondURL, simIndex));
 						System.out.println(firstURL+"  " + secondURL + "  " + simIndex);
