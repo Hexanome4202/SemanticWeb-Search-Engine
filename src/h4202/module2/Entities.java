@@ -63,7 +63,7 @@ public class Entities {
 		for(int i=0; i < array.size(); i++){
 			
 			JSONObject doublet = (JSONObject)array.get(i);
-			
+
 			Pair graph = getIndividualGraph(doublet);
 			
 			url_triplets.put(graph.getUrl(),graph.getTriplets());
@@ -98,6 +98,18 @@ public class Entities {
 		uris.addAll(getEntities(text));
 		
 		SortedSet<Triplet> triplets = getTriplets(uris);
+		
+		// Graph's relaxation
+		Iterator<Triplet> it = triplets.iterator();
+		Set<String> objects = new TreeSet<String>();
+		while(it.hasNext()){
+			String temp= it.next().getObject();
+			if(temp.startsWith("http"))
+				objects.add(temp);
+		}
+		if(!objects.isEmpty()){
+			triplets.addAll(getTriplets(objects));
+		}
 		
 		Pair result = new Pair(url,triplets);
 		
@@ -140,7 +152,6 @@ public class Entities {
 		// run a sparql query to get the triplets
 		try {
 			
-			
 			it = uris.iterator();
 			while(it.hasNext()){
 				String sparqlResult = "";
@@ -181,6 +192,12 @@ public class Entities {
 					Triplet triplet = new Triplet(subject,predicate,object);
 					triplets.add(triplet);
 				}
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					
+					e.printStackTrace();
+				}
 			}
  
 		} catch (MalformedURLException e) {
@@ -195,6 +212,7 @@ public class Entities {
 		
 		return triplets;
 	}
+	
 	
 	/**
 	 * Method that calls DBPedia Spotlight with a text to get the entities inside 
@@ -249,6 +267,11 @@ public class Entities {
 		return result;
 	}
 	
+	/**
+	 * Class that contains a URL and his triplets
+	 * @author asarazin1
+	 *
+	 */
 	public static class Pair{
 		private String url;
 		private SortedSet<Triplet> triplets;
@@ -267,5 +290,4 @@ public class Entities {
 		}
 
 	}
-	
 }
