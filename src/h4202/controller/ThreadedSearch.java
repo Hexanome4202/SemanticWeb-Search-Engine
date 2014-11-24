@@ -37,55 +37,50 @@ public class ThreadedSearch extends Action {
 		HashMap<String, SortedSet<Triplet>> url_triplets = new HashMap<String, SortedSet<Triplet>>();
 		// ----- Part I
 		String keyWords = request.getParameter("keyWords");
-		boolean doAll = true;
+		
 		if(keyWords != null) {
 			String json = GoogleResults.search(keyWords, 1);
 			File f = new File(keyWords+".ser");
 			if(f.exists() && !f.isDirectory()){
 				url_triplets = deserializeGraph(keyWords);
-				
-				
-				doAll = !similarResults(keyWords, json, url_triplets);
-			} 
+			}
 			
-			if(doAll) {
-				Semaphore semaphore = new Semaphore(0);
-				Semaphore hashMapSemaphore = new Semaphore(1);
-				int i = 0;
-				
-				JSONParser parser = new JSONParser();
-				
-				Object obj;
-				try {
-					obj = parser.parse(json);
-					JSONObject jsonObject = (JSONObject) obj;
-					 
-					// loop array
-					JSONArray links = (JSONArray) jsonObject.get("items");
-					Iterator<JSONObject> iterator = links.iterator();
-					while (iterator.hasNext()) {
-						jsonObject = iterator.next();
-						new Thread(new ThreadSearch(jsonObject, url_triplets, semaphore, hashMapSemaphore)).start();
-						++i;
-					}
-					
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			Semaphore semaphore = new Semaphore(0);
+			Semaphore hashMapSemaphore = new Semaphore(1);
+			int i = 0;
+			
+			JSONParser parser = new JSONParser();
+			
+			Object obj;
+			try {
+				obj = parser.parse(json);
+				JSONObject jsonObject = (JSONObject) obj;
+				 
+				// loop array
+				JSONArray links = (JSONArray) jsonObject.get("items");
+				Iterator<JSONObject> iterator = links.iterator();
+				while (iterator.hasNext()) {
+					jsonObject = iterator.next();
+					new Thread(new ThreadSearch(jsonObject, url_triplets, semaphore, hashMapSemaphore)).start();
+					++i;
 				}
-				try {
-					semaphore.acquire(i);
-				} catch (InterruptedException e) {
-					// TODO: Do something smarter
-					e.printStackTrace();
-					return;
-				}
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				semaphore.acquire(i);
+			} catch (InterruptedException e) {
+				// TODO: Do something smarter
+				e.printStackTrace();
+				return;
+			}
 //				long estimatedTime = System.nanoTime() - startTime;
 //				System.out.println(estimatedTime);
 //				System.exit(0);
-				
-				cache(url_triplets, keyWords);
-			}
+			
+			cache(url_triplets, keyWords);
 			
 			// ----- PART II & III
 			Similarity sim = new Similarity(url_triplets);

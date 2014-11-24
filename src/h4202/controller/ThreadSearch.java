@@ -34,7 +34,7 @@ public class ThreadSearch implements Runnable {
 		
 		link = this.jsonObject.get("link").toString();
 		link = link.replace("\\/", "/");
-		if(!link.contains(".pdf")) {
+		if(!link.contains(".pdf") && !this.url_triplets.containsKey(link)) {
 			text = GoogleResults.getTextFromPage(link).replace("\\/", "/").replaceAll("\\s+", " ").replaceAll("\\\"", "").replaceAll("\\[.*?\\]", "");
 			snippet = this.jsonObject.get("snippet").toString();
 			if(text != "") {

@@ -33,11 +33,9 @@
 	<table>
 		<tr>
 
-			<td style="padding: 20px;">
-				<img src="<%out.print(session.getAttribute("img"));%>" alt="" height="auto"
-				width="150">
-			</td>
-			<td style="text-align: left; vertical-align: top; padding: 10px;">
+			<td><img src="<%out.print(session.getAttribute("img"));%>" alt="" height="150"
+				width="150"></td>
+			<td style="text-align: left; vertical-align: top; padding: 0">
 				<table>
 				<tr>
 					<h2>
