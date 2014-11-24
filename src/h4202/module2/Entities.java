@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Vector;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -24,7 +25,9 @@ import org.json.simple.parser.ParseException;
 
 public class Entities {
 	
-	private static int URI_LIMIT_SIZE = 3800; 
+	private static int URI_LIMIT_SIZE = 3800;
+	
+	private static int URI_LIMIT_NUMBER = 20;
 	
 	public static void main(String[] args) {
 		
@@ -109,16 +112,25 @@ public class Entities {
 	private static SortedSet<Triplet> getTriplets(Set<String> resources) {
 		SortedSet<Triplet> triplets = new TreeSet<Triplet>();		 
 				
-		String uris = "";
+		Vector<String> uris = new Vector<String>();
 		Iterator<String> it = resources.iterator();
+		
+		int i=1;
+		String temp = "";
 		
 		// for each URI given, we encode it 
 		while(it.hasNext()){
 			
 			try {
-				uris += URLEncoder.encode("<"+ it.next() +">", "UTF8");
-				if(it.hasNext()) 
-					uris += "%2C";
+				temp += URLEncoder.encode("<"+ it.next() +">", "UTF8");
+				if(it.hasNext() && i%URI_LIMIT_NUMBER !=0) 
+					temp += "%2C";
+				else{
+					uris.add(temp);
+					temp = "";
+				}
+				i++;
+					
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
@@ -127,43 +139,48 @@ public class Entities {
 	
 		// run a sparql query to get the triplets
 		try {
-			String sparqlResult = "";
 			
-			URI uri = new URI("http://live.dbpedia.org/sparql" +
-					"?query=SELECT+*+WHERE+%7B+%3Fs+%3Fp+%3Fo.+FILTER%28%3Fs+in+%28"
-					+ uris 
-					+ "%29%29%0D%0AFILTER%28%3Fp+not+in+%28%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23sameAs%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageID%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageLength%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageModified%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageOutDegree%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageRevisionID%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageRevisionLink%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Falign%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fcaption%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fdirection%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FfooterAlign%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Frows%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageEditLink%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageExtracted%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FimageSize%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fimage%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FwikiPageUsesTemplate%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fwidth%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FheaderAlign%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FimageName%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fsignature%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FhasPhotoCollection%3E%2C+%3Chttp%3A%2F%2Fwww.georss.org%2Fgeorss%2Fpoint%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fbgcolor%3E%29%29%7D+&format=application%2Fsparql-results%2Bjson&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000&debug=on"
-					);
+			
+			it = uris.iterator();
+			while(it.hasNext()){
+				String sparqlResult = "";
+				
+				URI uri = new URI("http://live.dbpedia.org/sparql" +
+						"?query=SELECT+*+WHERE+%7B+%3Fs+%3Fp+%3Fo.+FILTER%28%3Fs+in+%28"
+						+ it.next()
+						+ "%29%29%0D%0AFILTER%28%3Fp+not+in+%28%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23sameAs%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageID%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageLength%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageModified%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageOutDegree%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageRevisionID%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageRevisionLink%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Falign%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fcaption%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fdirection%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FfooterAlign%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Frows%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageEditLink%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2FwikiPageExtracted%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FimageSize%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fimage%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FwikiPageUsesTemplate%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fwidth%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FheaderAlign%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FimageName%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fsignature%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FhasPhotoCollection%3E%2C+%3Chttp%3A%2F%2Fwww.georss.org%2Fgeorss%2Fpoint%3E%2C+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2Fbgcolor%3E%29%29%7D+&format=application%2Fsparql-results%2Bjson&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000&debug=on"
+						);
 
-			// get URL content
-			URLConnection conn = uri.toURL().openConnection();
- 
-			// open the stream and put it into BufferedReader
-			BufferedReader br = new BufferedReader(
-                               new InputStreamReader(conn.getInputStream()));
-			
-			String inputLine;
-			while ((inputLine = br.readLine()) != null) {
-				sparqlResult += inputLine;
-			}
-			br.close();
-			
-			JSONParser parser = new JSONParser();
-			
-			// parse the string as a JSON Object
-			JSONObject obj = (JSONObject) parser.parse(sparqlResult);
-			// get all the triplets
-			JSONArray bindings = (JSONArray) ((JSONObject) obj.get("results")).get("bindings");
-			
-			// for each triplet, create a new Triplet Object
-			for(int i=0; i < bindings.size(); i++){
+				// get URL content
+				URLConnection conn = uri.toURL().openConnection();
+	 
+				// open the stream and put it into BufferedReader
+				BufferedReader br = new BufferedReader(
+	                               new InputStreamReader(conn.getInputStream()));
 				
-				String subject = ((JSONObject)((JSONObject)bindings.get(i)).get("s")).get("value").toString();
-				String predicate = ((JSONObject)((JSONObject)bindings.get(i)).get("p")).get("value").toString();
-				String object = ((JSONObject)((JSONObject)bindings.get(i)).get("o")).get("value").toString();
+				String inputLine;
+				while ((inputLine = br.readLine()) != null) {
+					sparqlResult += inputLine;
+				}
+				br.close();
 				
-				Triplet triplet = new Triplet(subject,predicate,object);
-				triplets.add(triplet);
+				JSONParser parser = new JSONParser();
+				
+				// parse the string as a JSON Object
+				JSONObject obj = (JSONObject) parser.parse(sparqlResult);
+				// get all the triplets
+				JSONArray bindings = (JSONArray) ((JSONObject) obj.get("results")).get("bindings");
+				
+				// for each triplet, create a new Triplet Object
+				for(i=0; i < bindings.size(); i++){
+					
+					String subject = ((JSONObject)((JSONObject)bindings.get(i)).get("s")).get("value").toString();
+					String predicate = ((JSONObject)((JSONObject)bindings.get(i)).get("p")).get("value").toString();
+					String object = ((JSONObject)((JSONObject)bindings.get(i)).get("o")).get("value").toString();
+					
+					Triplet triplet = new Triplet(subject,predicate,object);
+					triplets.add(triplet);
+				}
 			}
  
 		} catch (MalformedURLException e) {
