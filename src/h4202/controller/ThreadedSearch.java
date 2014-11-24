@@ -2,10 +2,14 @@ package h4202.controller;
 
 import h4202.GoogleResults;
 import h4202.Similarity;
+import h4202.controller.ThreadSearch;
 import h4202.module2.Triplet;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,41 +36,48 @@ public class ThreadedSearch extends Action {
 		// ----- Part I
 		String keyWords = request.getParameter("keyWords");
 		if(keyWords != null) {
-			String json = GoogleResults.search(keyWords, 1);
-			Semaphore semaphore = new Semaphore(0);
-			Semaphore hashMapSemaphore = new Semaphore(1);
-			int i = 0;
-			
-			JSONParser parser = new JSONParser();
-			
-			Object obj;
-			try {
-				obj = parser.parse(json);
-				JSONObject jsonObject = (JSONObject) obj;
-				 
-				// loop array
-				JSONArray links = (JSONArray) jsonObject.get("items");
-				Iterator<JSONObject> iterator = links.iterator();
-				while (iterator.hasNext()) {
-					jsonObject = iterator.next();
-					new Thread(new ThreadSearch(jsonObject, url_triplets, semaphore, hashMapSemaphore)).start();
-					++i;
-				}
+			File f = new File(keyWords+".ser");
+			if(f.exists() && !f.isDirectory()){
+				url_triplets = deserializeGraph(keyWords);
+			} else {
+				String json = GoogleResults.search(keyWords, 1);
+				Semaphore semaphore = new Semaphore(0);
+				Semaphore hashMapSemaphore = new Semaphore(1);
+				int i = 0;
 				
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JSONParser parser = new JSONParser();
+				
+				Object obj;
+				try {
+					obj = parser.parse(json);
+					JSONObject jsonObject = (JSONObject) obj;
+					 
+					// loop array
+					JSONArray links = (JSONArray) jsonObject.get("items");
+					Iterator<JSONObject> iterator = links.iterator();
+					while (iterator.hasNext()) {
+						jsonObject = iterator.next();
+						new Thread(new ThreadSearch(jsonObject, url_triplets, semaphore, hashMapSemaphore)).start();
+						++i;
+					}
+					
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					semaphore.acquire(i);
+				} catch (InterruptedException e) {
+					// TODO: Do something smarter
+					e.printStackTrace();
+					return;
+				}
+//				long estimatedTime = System.nanoTime() - startTime;
+//				System.out.println(estimatedTime);
+//				System.exit(0);
+				
+				cache(url_triplets, keyWords);
 			}
-			try {
-				semaphore.acquire(i);
-			} catch (InterruptedException e) {
-				// TODO: Do something smarter
-				e.printStackTrace();
-				return;
-			}
-//			long estimatedTime = System.nanoTime() - startTime;
-//			System.out.println(estimatedTime);
-//			System.exit(0);
 			
 			// ----- PART II & III
 			Similarity sim = new Similarity(url_triplets);
@@ -99,10 +110,10 @@ public class ThreadedSearch extends Action {
 		}
 	}
 	
-	private void cache(HashMap<String, SortedSet<Triplet>> graph) {
+	private void cache(HashMap<String, SortedSet<Triplet>> graph, String keyWords) {
 		try
 		{
-			FileOutputStream fos = new FileOutputStream("hashmap.ser");
+			FileOutputStream fos = new FileOutputStream(keyWords + ".ser");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(graph);
 			oos.close();
@@ -110,5 +121,25 @@ public class ThreadedSearch extends Action {
 		} catch(IOException ioe) {
 			ioe.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Method to deserialize a Graph
+	 * @param keyWord : name of the file
+	 * @return : the graph
+	 */
+	private HashMap<String, SortedSet<Triplet>> deserializeGraph(String keyWord){
+		HashMap<String, SortedSet<Triplet>> results = new HashMap<String, SortedSet<Triplet>>();
+		
+		try{
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(keyWord+".ser"));
+			results = (HashMap<String, SortedSet<Triplet>>) in.readObject();
+			in.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return results;
 	}
 }

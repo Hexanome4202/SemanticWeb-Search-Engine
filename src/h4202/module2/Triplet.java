@@ -1,6 +1,8 @@
 package h4202.module2;
 
-public class Triplet implements Comparable<Triplet>{
+public class Triplet implements Serializable, Comparable<Triplet>{
+	private static final long serialVersionUID = -2816034354095859158L;
+	
 	private String predicate;
 	private String subject;
 	private String object;
