@@ -33,5 +33,8 @@
 		</table>
 	</form>
 
+	<p id="chart1"></p>
+	<script src="WebContent/js/d3.min.js"></script>
+	<script src="WebContent/js/graph.js"></script>
 </body>
 </html>
