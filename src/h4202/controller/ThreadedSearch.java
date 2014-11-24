@@ -27,7 +27,6 @@ import org.json.simple.parser.ParseException;
 
 public class ThreadedSearch extends Action {
 	
-	private static final Integer LIMIT_WORDS=150;
 
 	@Override
 	/**
