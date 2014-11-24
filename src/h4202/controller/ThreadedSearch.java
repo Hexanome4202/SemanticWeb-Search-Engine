@@ -4,6 +4,9 @@ import h4202.GoogleResults;
 import h4202.Similarity;
 import h4202.module2.Triplet;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.SortedSet;
@@ -76,14 +79,36 @@ public class ThreadedSearch extends Action {
 					BeaverBeverGo.LABEL, keyWords);
 			String desc = bv.searchForPredicate(sim.getMapFiles(),
 					BeaverBeverGo.ABSTRACT, keyWords);
+			String[] descriptionArray = desc.split("\\s+");
+			String description="";
+			if (descriptionArray.length<=35) {
+				description=desc;
+			} else {
+				for(int j=0;j<=150;j++){
+					description=description+descriptionArray[j]+" ";
+				}
+				description=description+"...";
+			}
 			
 			//System.out.println(img + "   " + label + "   " + desc);
 			
 			session.setAttribute("keyWords", keyWords);
 			session.setAttribute("img", img);
 			session.setAttribute("label", label);
-			session.setAttribute("description", desc);
+			session.setAttribute("description", description);
 		}
 	}
-
+	
+	private void cache(HashMap<String, SortedSet<Triplet>> graph) {
+		try
+		{
+			FileOutputStream fos = new FileOutputStream("hashmap.ser");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(graph);
+			oos.close();
+			fos.close();
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
 }
