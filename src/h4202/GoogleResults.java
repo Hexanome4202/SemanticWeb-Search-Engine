@@ -17,6 +17,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 public class GoogleResults {
 	private static final String GOOGLE_API_KEY = "AIzaSyD4vwwD8HzF1NLbhE04U0td5NOmH1NYwpw";
@@ -106,6 +108,7 @@ public class GoogleResults {
 		return elements;
 	}
 	/**
+	 * Uses Alchemy
 	 * TODO: try to make it faster
 	 * @param link
 	 * @return the text from the html web page
@@ -149,6 +152,42 @@ public class GoogleResults {
 			e.printStackTrace();
 		}
 		return "";
+	}
+	
+	/**
+	 * Local version
+	 * @param link
+	 * @return the text from the html web page
+	 */
+	public static String getTextFromPage2(String link) {
+		URL url;
+		String text = "";
+		String html = "";
+		 
+		try {
+			// get URL content
+			url = new URL(link);
+			URLConnection conn = url.openConnection();
+ 
+			// open the stream and put it into BufferedReader
+			BufferedReader br = new BufferedReader(
+                               new InputStreamReader(conn.getInputStream()));
+			String inputLine;
+ 
+			while ((inputLine = br.readLine()) != null) {
+				html += inputLine;
+			}
+			br.close();
+			
+			Document doc = Jsoup.parse(html);
+			text = doc.body().text();
+ 
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return text;
 	}
 	
 	/**

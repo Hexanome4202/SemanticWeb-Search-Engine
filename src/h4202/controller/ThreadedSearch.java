@@ -2,7 +2,6 @@ package h4202.controller;
 
 import h4202.GoogleResults;
 import h4202.Similarity;
-import h4202.model.GoogleElement;
 import h4202.module2.Triplet;
 
 import java.util.HashMap;
