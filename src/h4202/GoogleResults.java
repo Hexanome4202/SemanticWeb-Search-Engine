@@ -25,6 +25,8 @@ public class GoogleResults {
 	private static final String ALCHEMY_API_KEY = "85c049ad20d7b445086d6f8aa0e738660f232f9c";
 	private static final String ALCHEMY_URL_QUERY = "http://access.alchemyapi.com/calls/url/URLGetText?";
 	
+	private static final int NB_RESULTS = 3;
+	
 	public static void main(String[] args) {
 		save("search.json", createJSON(getElements(search("barack obama", 1))));
 	}
@@ -37,14 +39,14 @@ public class GoogleResults {
 	public static String search(String keywords, int pageNum) {
 		URL url;
 		String text = "";
-		int startIndex = (pageNum - 1) * 10 + 1;
+		int startIndex = (pageNum - 1) * NB_RESULTS + 1;
 		// TODO: change?
 		if(startIndex > 100) startIndex = 1;
 		keywords = keywords.replace(" ", "%20");
 		
 		try {
 			// get URL content
-			url = new URL(GOOGLE_URL_QUERY + "?key=" + GOOGLE_API_KEY + "&cx=015624405265777598503:nlbkiqyhteg&q=" + keywords + "&start=" + startIndex + "&num=10");
+			url = new URL(GOOGLE_URL_QUERY + "?key=" + GOOGLE_API_KEY + "&cx=015624405265777598503:nlbkiqyhteg&q=" + keywords + "&start=" + startIndex + "&num=" + NB_RESULTS);
 			URLConnection conn = url.openConnection();
  
 			// open the stream and put it into BufferedReader

@@ -88,8 +88,6 @@ public class ActionServlet extends HttpServlet {
 	}// </editor-fold>
 	
 	public void setViewAndAction(String todo, String keyWords) {
-		System.out.println(keyWords);
-		System.out.println(todo);
 		if(todo == null) {
 			this.view = "home.jsp";
 		} else if("search".equals(todo) && keyWords != null && !"".equals(keyWords)) {

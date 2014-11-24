@@ -75,7 +75,7 @@ public class Entities {
 	 * @param doublet : the JSONObject containing the url and the text
 	 * @return : a Pair containing the url and the triplets
 	 */
-	private static Pair getIndividualGraph(JSONObject doublet){
+	public static Pair getIndividualGraph(JSONObject doublet){
 		
 		String url = doublet.get("link").toString();
 		SortedSet<String> uris = new TreeSet<String>();
@@ -232,7 +232,7 @@ public class Entities {
 		return result;
 	}
 	
-	private static class Pair{
+	public static class Pair{
 		private String url;
 		private SortedSet<Triplet> triplets;
 		
