@@ -1,5 +1,7 @@
 package h4202.module2;
 
+import java.io.Serializable;
+
 public class Triplet implements Serializable, Comparable<Triplet>{
 	private static final long serialVersionUID = -2816034354095859158L;
 	

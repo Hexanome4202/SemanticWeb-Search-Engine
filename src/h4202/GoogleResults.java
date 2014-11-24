@@ -39,10 +39,6 @@ public class GoogleResults {
 	 * @return
 	 */
 	public static String search(String keywords, int pageNum) {
-<<<<<<< Updated upstream
-=======
-		System.out.println("DŽbut search");
->>>>>>> Stashed changes
 		URL url;
 		String text = "";
 		int startIndex = (pageNum - 1) * NB_RESULTS + 1;
