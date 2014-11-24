@@ -4,6 +4,9 @@ import h4202.GoogleResults;
 import h4202.Similarity;
 import h4202.module2.Triplet;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.SortedSet;
@@ -85,5 +88,17 @@ public class ThreadedSearch extends Action {
 			session.setAttribute("description", desc);
 		}
 	}
-
+	
+	private void cache(HashMap<String, SortedSet<Triplet>> graph) {
+		try
+		{
+			FileOutputStream fos = new FileOutputStream("hashmap.ser");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(graph);
+			oos.close();
+			fos.close();
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
 }
