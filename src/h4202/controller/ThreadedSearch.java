@@ -71,11 +71,11 @@ public class ThreadedSearch extends Action {
 			//sim.readAll();
 			sim.fillSimilarityList();
 			String img = bv.searchForPredicate(sim.getMapFiles(),
-					BeaverBeverGo.IMAGE);
+					BeaverBeverGo.IMAGE, keyWords);
 			String label = bv.searchForPredicate(sim.getMapFiles(),
-					BeaverBeverGo.LABEL);
+					BeaverBeverGo.LABEL, keyWords);
 			String desc = bv.searchForPredicate(sim.getMapFiles(),
-					BeaverBeverGo.ABSTRACT);
+					BeaverBeverGo.ABSTRACT, keyWords);
 			
 			//System.out.println(img + "   " + label + "   " + desc);
 			

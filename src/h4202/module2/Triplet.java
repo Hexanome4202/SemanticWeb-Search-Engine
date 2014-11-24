@@ -28,6 +28,11 @@ public class Triplet implements Comparable<Triplet>{
 		String text=this.getSubject()+this.getPredicate()+this.getObject();
 		return text.compareTo(o.getSubject()+o.getPredicate()+o.getObject());
 	}
+
+	@Override
+	public String toString() {
+		return subject+"  "+predicate+"   "+object;
+	}
 	
 	
 	

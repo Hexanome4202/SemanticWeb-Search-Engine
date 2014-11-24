@@ -43,12 +43,12 @@ public class Similarity {
 
 			System.out.println(a);
 		}
-		String imageURL=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.IMAGE);
-		String label=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.LABEL);
-		String desc=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.ABSTRACT);
-		System.out.println(imageURL);
-		System.out.println(label);
-		System.out.println(desc);
+//		String imageURL=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.IMAGE);
+//		String label=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.LABEL);
+//		String desc=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.ABSTRACT);
+//		System.out.println(imageURL);
+//		System.out.println(label);
+//		System.out.println(desc);
 
 	}
 
@@ -179,6 +179,7 @@ public class Similarity {
 					if (simIndex>=0.0) { //seuil de 0, pas de seuil
 						similarityList.add(new SimilarityArc(firstURL,
 								secondURL, simIndex));
+						System.out.println(firstURL+"  " + secondURL + "  " + simIndex);
 					}
 				}
 				j++;
