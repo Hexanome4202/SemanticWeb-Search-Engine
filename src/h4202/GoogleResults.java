@@ -21,13 +21,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 public class GoogleResults {
-	private static final String GOOGLE_API_KEY = "AIzaSyD4vwwD8HzF1NLbhE04U0td5NOmH1NYwpw";
+	private static final String GOOGLE_API_KEY = "AIzaSyCxUR5AfAUtTLqNWzYPFseyvtLPZ-4626k";
 	private static final String GOOGLE_URL_QUERY = "https://www.googleapis.com/customsearch/v1";
 	
 	private static final String ALCHEMY_API_KEY = "85c049ad20d7b445086d6f8aa0e738660f232f9c";
 	private static final String ALCHEMY_URL_QUERY = "http://access.alchemyapi.com/calls/url/URLGetText?";
 	
-	private static final int NB_RESULTS = 3;
+	private static final int NB_RESULTS = 4;
 	
 	public static void main(String[] args) {
 		save("search.json", createJSON(getElements(search("barack obama", 1))));

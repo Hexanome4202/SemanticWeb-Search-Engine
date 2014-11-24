@@ -24,8 +24,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.sun.org.apache.bcel.internal.generic.SIPUSH;
-
 public class ThreadedSearch extends Action {
 	
 	private static final Integer LIMIT_WORDS=150;
@@ -39,12 +37,18 @@ public class ThreadedSearch extends Action {
 		HashMap<String, SortedSet<Triplet>> url_triplets = new HashMap<String, SortedSet<Triplet>>();
 		// ----- Part I
 		String keyWords = request.getParameter("keyWords");
+		boolean doAll = true;
 		if(keyWords != null) {
+			String json = GoogleResults.search(keyWords, 1);
 			File f = new File(keyWords+".ser");
 			if(f.exists() && !f.isDirectory()){
 				url_triplets = deserializeGraph(keyWords);
-			} else {
-				String json = GoogleResults.search(keyWords, 1);
+				
+				
+				doAll = !similarResults(keyWords, json, url_triplets);
+			} 
+			
+			if(doAll) {
 				Semaphore semaphore = new Semaphore(0);
 				Semaphore hashMapSemaphore = new Semaphore(1);
 				int i = 0;
@@ -145,5 +149,33 @@ public class ThreadedSearch extends Action {
 		}
 		
 		return results;
+	}
+	
+	private boolean similarResults(String keyWords, String json, HashMap<String, SortedSet<Triplet>> url_triplets) {
+		boolean result = true;
+		JSONParser parser = new JSONParser();
+		Object obj;
+		String link;
+		
+		try {
+			obj = parser.parse(json);
+			JSONObject jsonObject = (JSONObject) obj;
+			 
+			// loop array
+			JSONArray links = (JSONArray) jsonObject.get("items");
+			Iterator<JSONObject> iterator = links.iterator();
+			while (iterator.hasNext() && result) {
+				jsonObject = iterator.next();
+				link = jsonObject.get("link").toString();
+				link = link.replace("\\/", "/");
+				if(! url_triplets.containsKey(link)) result = false;
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }
