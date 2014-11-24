@@ -84,7 +84,7 @@ public class ThreadedSearch extends Action {
 			if (descriptionArray.length<=35) {
 				description=desc;
 			} else {
-				for(int j=0;j<=35;j++){
+				for(int j=0;j<=150;j++){
 					description=description+descriptionArray[j]+" ";
 				}
 				description=description+"...";

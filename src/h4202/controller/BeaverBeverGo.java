@@ -2,6 +2,8 @@ package h4202.controller;
 
 import h4202.module2.Triplet;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
@@ -20,6 +22,8 @@ public class BeaverBeverGo {
 	 * @return
 	 */
 	public String searchForPredicate(Map<String, SortedSet<Triplet>> map, String predicate, String keyWord){
+		
+		
 		
 		for (Map.Entry<String, SortedSet<Triplet>> Entry : map.entrySet()) {
 			
@@ -40,5 +44,30 @@ public class BeaverBeverGo {
 				}
 		}
 		return "";
+	}
+	
+public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, String predicate, String keyWord){
+		
+		List<String> list = new ArrayList<String>();
+		
+		for (Map.Entry<String, SortedSet<Triplet>> Entry : map.entrySet()) {
+			
+				SortedSet<Triplet> tripletsSet = Entry.getValue();
+				for(Triplet t : tripletsSet){
+					if (t.getPredicate().equals(predicate)) {
+						String[] keys = keyWord.split("\\s+");
+						for (String s : keys)
+						{
+						  if (t.getSubject().toLowerCase().contains(s.toLowerCase()))
+						  {
+							  	list.add(t.getObject());
+						  }
+						}
+						
+					}
+					//System.out.println(t.toString());
+				}
+		}
+		return list;
 	}
 }
