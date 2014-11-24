@@ -79,13 +79,23 @@ public class ThreadedSearch extends Action {
 					BeaverBeverGo.LABEL, keyWords);
 			String desc = bv.searchForPredicate(sim.getMapFiles(),
 					BeaverBeverGo.ABSTRACT, keyWords);
+			String[] descriptionArray = desc.split("\\s+");
+			String description="";
+			if (descriptionArray.length<=35) {
+				description=desc;
+			} else {
+				for(int j=0;j<=35;j++){
+					description=description+descriptionArray[j]+" ";
+				}
+				description=description+"...";
+			}
 			
 			//System.out.println(img + "   " + label + "   " + desc);
 			
 			session.setAttribute("keyWords", keyWords);
 			session.setAttribute("img", img);
 			session.setAttribute("label", label);
-			session.setAttribute("description", desc);
+			session.setAttribute("description", description);
 		}
 	}
 	
