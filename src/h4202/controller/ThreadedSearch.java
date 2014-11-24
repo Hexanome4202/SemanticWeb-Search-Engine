@@ -24,7 +24,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.sun.org.apache.bcel.internal.generic.SIPUSH;
+
 public class ThreadedSearch extends Action {
+	
+	private static final Integer LIMIT_WORDS=150;
 
 	@Override
 	/**
@@ -92,10 +96,10 @@ public class ThreadedSearch extends Action {
 					BeaverBeverGo.ABSTRACT, keyWords);
 			String[] descriptionArray = desc.split("\\s+");
 			String description="";
-			if (descriptionArray.length<=35) {
+			if (descriptionArray.length<=LIMIT_WORDS) {
 				description=desc;
 			} else {
-				for(int j=0;j<=150;j++){
+				for(int j=0;j<=LIMIT_WORDS;j++){
 					description=description+descriptionArray[j]+" ";
 				}
 				description=description+"...";
