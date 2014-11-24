@@ -20,15 +20,14 @@
 		<table align = "center">
 			<tr>
 				<td
-					style="border-style: solid none solid solid; border-color: #4B7B9F; border-width: 1px;">
+					style="border-style: solid none solid solid; border-color: green; border-width: 1px;">
 					<input type="text" name="keyWords" id="keyWords"
-					style="width: 150px; border: 0px solid; height: 17px; padding: 0px 3px; position: relative;">
+					style="width: 150px; border: 0px solid; height: 17px; position: relative;">
 				</td>
-				<td
-					style="border-style: solid; border-color: #4B7B9F; border-width: 1px;">
+				<td style="border-style: solid; border-color: green; border-width: 1px;  background-color: green;">
 					<input type="image" value=""
 					style="border-style: none; width: 24px; height: 20px;"
-					src="https://cdn3.iconfinder.com/data/icons/eightyshades/512/11_Search-128.png">
+					src="http://www.clker.com/cliparts/v/C/2/9/I/6/search-icon-white-md.png">
 				</td>
 			</tr>
 		</table>
