@@ -60,38 +60,53 @@ public class Entities {
 		for(int i=0; i < array.size(); i++){
 			
 			JSONObject doublet = (JSONObject)array.get(i);
-		
-			String url = doublet.get("link").toString();
-			SortedSet<String> uris = new TreeSet<String>();
 			
-			String text = doublet.get("text").toString();
-			int size=text.length();
-	
-			int nb = size/URI_LIMIT_SIZE;
-			if(size%URI_LIMIT_SIZE == 0)
-				nb -=1;
+			Pair graph = getIndividualGraph(doublet);
 			
-			for(int j=0; j<nb; j++){
-				String start_text = text.substring(0,URI_LIMIT_SIZE-1);
-				text = text.substring(URI_LIMIT_SIZE);
-				uris.addAll(getEntities(start_text));
-			}
-			uris.addAll(getEntities(text));
+			url_triplets.put(graph.getUrl(),graph.getTriplets());
 			
-			SortedSet<Triplet> triplets = getTriplets(uris);
-			
-			url_triplets.put(url,triplets);
 		}
 		
 		return url_triplets;
 	}
 
 	/**
+	 * Method to get an individual graph
+	 * @param doublet : the JSONObject containing the url and the text
+	 * @return : a Pair containing the url and the triplets
+	 */
+	private static Pair getIndividualGraph(JSONObject doublet){
+		
+		String url = doublet.get("link").toString();
+		SortedSet<String> uris = new TreeSet<String>();
+		
+		String text = doublet.get("text").toString();
+		int size=text.length();
+
+		int nb = size/URI_LIMIT_SIZE;
+		if(size%URI_LIMIT_SIZE == 0)
+			nb -=1;
+		
+		for(int j=0; j<nb; j++){
+			String start_text = text.substring(0,URI_LIMIT_SIZE-1);
+			text = text.substring(URI_LIMIT_SIZE);
+			uris.addAll(getEntities(start_text));
+		}
+		uris.addAll(getEntities(text));
+		
+		SortedSet<Triplet> triplets = getTriplets(uris);
+		
+		Pair result = new Pair(url,triplets);
+		
+		return result;
+	}
+	
+	/**
 	 * Method that gives all the triplets (subject, predicate, object) found for a set of subject URI's  
 	 * @param resources : set of URI's 
 	 * @return Set<Triplet> : all the triplets found (subject = URI given)
 	 */
-	public static SortedSet<Triplet> getTriplets(Set<String> resources) {
+	private static SortedSet<Triplet> getTriplets(Set<String> resources) {
 		SortedSet<Triplet> triplets = new TreeSet<Triplet>();		 
 				
 		String uris = "";
@@ -169,7 +184,7 @@ public class Entities {
 	 * @param text : the text to analyze
 	 * @return Set<String> : a set of all the entities found
 	 */
-	public static SortedSet<String> getEntities(String text){
+	private static SortedSet<String> getEntities(String text){
 		SortedSet<String> result = new TreeSet<String>();
 		
 		String confidence = "0.2";
@@ -215,6 +230,25 @@ public class Entities {
 		}
 		
 		return result;
+	}
+	
+	private static class Pair{
+		private String url;
+		private SortedSet<Triplet> triplets;
+		
+		public Pair(String url, SortedSet<Triplet> triplets){
+			this.url = url;
+			this.triplets = triplets;
+		}
+
+		public String getUrl() {
+			return url;
+		}
+		
+		public SortedSet<Triplet> getTriplets() {
+			return triplets;
+		}
+
 	}
 	
 }
