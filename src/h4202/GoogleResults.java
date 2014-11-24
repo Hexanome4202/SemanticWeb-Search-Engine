@@ -21,7 +21,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 public class GoogleResults {
+	//Vitré's key
 	private static final String GOOGLE_API_KEY = "AIzaSyD4vwwD8HzF1NLbhE04U0td5NOmH1NYwpw";
+	//Vipi's key
+	//private static final String GOOGLE_API_KEY = "AIzaSyCGxfGjMGKQhnQ2cm1MkXdFL6UCFgScgMQ";
 	private static final String GOOGLE_URL_QUERY = "https://www.googleapis.com/customsearch/v1";
 	
 	private static final String ALCHEMY_API_KEY = "85c049ad20d7b445086d6f8aa0e738660f232f9c";
