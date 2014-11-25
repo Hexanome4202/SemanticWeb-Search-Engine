@@ -89,7 +89,7 @@
 						%>
 						<td><a href="<%out.print(s.getHomePageLink());%>"><img
 								alt="HomePage" height="auto" width="40"
-								src="https://cdn1.iconfinder.com/data/icons/MetroStation-PNG/128/MB__home.png" /></a></td>
+								src="https://s3.amazonaws.com/saveoneverything_assets/assets/images/icons/home_services_icon.png" /></a></td>
 						<%
 							}
 						%>
