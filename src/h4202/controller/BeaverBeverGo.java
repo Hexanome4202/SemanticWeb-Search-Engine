@@ -1,9 +1,11 @@
 package h4202.controller;
 
+import h4202.Similarity;
 import h4202.model.ResultModel;
 import h4202.module2.Triplet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -19,6 +21,8 @@ public class BeaverBeverGo {
 	public static final String ABSTRACT = "http://dbpedia.org/ontology/abstract";
 	public static final String WIKIPEDIA_LINK = "http://xmlns.com/foaf/0.1/isPrimaryTopicOf";
 	public static final String HOMEPAGE = "http://xmlns.com/foaf/0.1/homepage";
+	
+	public static final String[] PREPOSITIONS ={"for", "the", "as", "to", "de", "le","la"};
 	
 	
 	
@@ -75,15 +79,16 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 		}
 		return list;
 	}
-	public SortedSet<ResultModel> searchForResultList(Map<String, SortedSet<Triplet>> map, String keyWord){
+	public SortedSet<ResultModel> searchForResultList(Map<String, SortedSet<Triplet>> map, String keyWord, Similarity sim){
+		
 		
 		SortedSet<ResultModel> list = new TreeSet<ResultModel>();
 		
 		for (Map.Entry<String, SortedSet<Triplet>> Entry : map.entrySet()) {
 			
+			String url = Entry.getKey();
 			SortedSet<Triplet> tripletsSet = Entry.getValue();
 			for(Triplet t : tripletsSet){
-				System.out.println(t.toString());
 				String img="";
 				String desc="";
 				String wikiPage="";
@@ -92,29 +97,32 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 					String[] keys = keyWord.split("\\s+");
 					for (String s : keys)
 					{
-					  if (t.getSubject().toLowerCase().contains(s.toLowerCase()))
-					  {
-						  img=searchForSubjectPredicate(map, t.getSubject() , BeaverBeverGo.IMAGE, keyWord);
-						  desc=searchForSubjectPredicate(map, t.getSubject() , BeaverBeverGo.ABSTRACT, keyWord);
-						  wikiPage=searchForSubjectPredicate(map, t.getSubject(), BeaverBeverGo.WIKIPEDIA_LINK, keyWord);
-						  homePage=searchForSubjectPredicate(map, t.getSubject(), BeaverBeverGo.HOMEPAGE, keyWord);
-						  String[] descriptionArray = desc.split("\\s+");
-						  String description="";
-							if (descriptionArray.length<=LIMIT_WORDS) {
-								description=desc;
-							} else {
-								for(int j=0;j<=LIMIT_WORDS;j++){
-									description=description+descriptionArray[j]+" ";
-								}
-								description=description+"...";
-							}
-						  list.add(new ResultModel(t.getObject(), img, description, wikiPage, homePage));
-					  }
+						if(!Arrays.asList(PREPOSITIONS).contains(s)){
+							  if (t.getSubject().toLowerCase().contains(s.toLowerCase()))
+							  {
+								  img=searchForSubjectPredicate(map, t.getSubject() , BeaverBeverGo.IMAGE, keyWord);
+								  desc=searchForSubjectPredicate(map, t.getSubject() , BeaverBeverGo.ABSTRACT, keyWord);
+								  wikiPage=searchForSubjectPredicate(map, t.getSubject(), BeaverBeverGo.WIKIPEDIA_LINK, keyWord);
+								  homePage=searchForSubjectPredicate(map, t.getSubject(), BeaverBeverGo.HOMEPAGE, keyWord);
+								  String[] descriptionArray = desc.split("\\s+");
+								  String description="";
+									if (descriptionArray.length<=LIMIT_WORDS) {
+										description=desc;
+									} else {
+										for(int j=0;j<=LIMIT_WORDS;j++){
+											description=description+descriptionArray[j]+" ";
+										}
+										description=description+"...";
+									}
+								  list.add(new ResultModel(t.getObject(), img, description, wikiPage, homePage, url, sim.similatiryAverage(url)));
+							  }
+						}
 					}
 					
 				}
 			}
 	}
+		
 		
 		return list;
 	}

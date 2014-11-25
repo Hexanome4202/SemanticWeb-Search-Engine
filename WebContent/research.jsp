@@ -3,7 +3,7 @@
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="java.util.List"%>
-<%@page import="java.util.SortedSet"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.TreeSet"%>
 <html>
 <head>
@@ -50,15 +50,15 @@
 	</div>
 	<table>
 		<%
-			SortedSet<ResultModel> list = (SortedSet<ResultModel>) session
+			List<ResultModel> list = (List<ResultModel>) session
 					.getAttribute("resultsList");
 			for (ResultModel s : list) {
 		%>
 		<tr>
 
-			<td><img src="<%out.print(s.getImgURL());%>" alt=""
-				height="auto" width="150"></td>
-			<td style="text-align: left; vertical-align: top; padding: 20px;">
+			<td><a href="<%out.print(s.getUrl());%>"><img src="<%out.print(s.getImgURL());%>" alt=""
+				height="auto" width="150" ></td>
+			<td style="text-align: left; vertical-align: top; padding: 20px;"></a>
 				<table>
 					<tr>
 						<h2>
