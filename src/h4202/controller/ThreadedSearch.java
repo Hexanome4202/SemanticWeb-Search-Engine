@@ -14,8 +14,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.Semaphore;
@@ -90,8 +94,19 @@ public class ThreadedSearch extends Action {
 			BeaverBeverGo bv = new BeaverBeverGo();
 			sim.fillSimilarityList();
 			
-			Set<ResultModel> rM=bv.searchForResultList(sim.getMapFiles(), keyWords);
-			for(ResultModel r : rM){
+			Set<ResultModel> rM=bv.searchForResultList(sim.getMapFiles(), keyWords, sim);
+
+			List<ResultModel> listRM = new ArrayList<>(rM);
+			
+			Comparator<ResultModel> comparator = new Comparator<ResultModel>() {
+			    public int compare(ResultModel c1, ResultModel c2) {
+			        return (int) ((c2.getSimilarityAverage() - c1.getSimilarityAverage())*10000000);
+			    }
+			};
+
+			Collections.sort(listRM, comparator);
+			
+			for(ResultModel r : listRM){
 				System.out.println(r.toString());
 			}
 			
@@ -120,6 +135,7 @@ public class ThreadedSearch extends Action {
 			session.setAttribute("keyWords", keyWords);
 			session.setAttribute("resultsList", rM);
 			session.setAttribute("graph", sim.createGraphViz());
+			session.setAttribute("resultsList", listRM);
 		}
 	}
 	

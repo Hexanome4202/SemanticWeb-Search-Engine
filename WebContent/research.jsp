@@ -3,7 +3,7 @@
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="java.util.List"%>
-<%@page import="java.util.SortedSet"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.TreeSet"%>
 <html>
 <head>
@@ -50,15 +50,15 @@
 	</div>
 	<table>
 		<%
-			SortedSet<ResultModel> list = (SortedSet<ResultModel>) session
+			List<ResultModel> list = (List<ResultModel>) session
 					.getAttribute("resultsList");
 			for (ResultModel s : list) {
 		%>
 		<tr>
 
-			<td><img src="<%out.print(s.getImgURL());%>" alt=""
-				height="auto" width="150"></td>
-			<td style="text-align: left; vertical-align: top; padding: 20px;">
+			<td><a href="<%out.print(s.getUrl());%>"><img src="<%out.print(s.getImgURL());%>" alt=""
+				height="auto" width="150" ></a></td>
+			<td style="text-align: left; vertical-align: top; padding: 20px;"></a>
 				<table>
 					<tr>
 						<h2>
@@ -68,7 +68,7 @@
 						</h2>
 					</tr>
 					<tr>
-						<p>
+						<p style= "font-size:small; font-family:arial,sans-serif">
 							<%
 								out.print(s.getDescription());
 							%>
@@ -89,7 +89,7 @@
 						%>
 						<td><a href="<%out.print(s.getHomePageLink());%>"><img
 								alt="HomePage" height="auto" width="40"
-								src="https://cdn1.iconfinder.com/data/icons/MetroStation-PNG/128/MB__home.png" /></a></td>
+								src="https://s3.amazonaws.com/saveoneverything_assets/assets/images/icons/home_services_icon.png" /></a></td>
 						<%
 							}
 						%>

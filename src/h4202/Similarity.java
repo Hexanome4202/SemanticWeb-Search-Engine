@@ -180,7 +180,7 @@ public class Similarity {
 					SortedSet<Triplet> pagesSecond = SecondEntry.getValue();
 					Double simIndex = similarityCalcul(pagesFirst, pagesSecond);
 					
-					if (simIndex>=0.05) { //seuil
+					if (simIndex>=0.00) { //seuil
 						similarityList.add(new SimilarityArc(firstURL,
 								secondURL, simIndex));
 						System.out.println(firstURL+"  " + secondURL + "  " + simIndex);
@@ -255,6 +255,22 @@ public class Similarity {
 		}
 		graph = "<script>" + nodes + "];" + edges + "]; var container=document.getElementById('mynetwork'),data={nodes:nodes,edges:edges},options={width:'800px',height:'800px'},network=new vis.Network(container,data,options);</script>";
 		return graph;
+	}
+	
+	public double similatiryAverage(String url){
+
+		double sum=0;
+		double size=0;
+		for(SimilarityArc arc : similarityList){
+			
+			if(arc.getFirstURL()==url || arc.getSecondURL()==url){
+				sum+=arc.getSimilarityIndex();
+				size++;
+			}
+			
+		}
+		
+		return sum/size;
 	}
 
 	public Map<String, SortedSet<Triplet>> getMapFiles() {
