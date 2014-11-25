@@ -131,11 +131,14 @@ public class ThreadedSearch extends Action {
 				e.printStackTrace();
 			}
 		    
+		    HashMap<String, Integer> map = new HashMap<String, Integer>();
+		    
 		    session.setAttribute("viz", script);
 			session.setAttribute("keyWords", keyWords);
 			session.setAttribute("resultsList", rM);
-			session.setAttribute("graph", sim.createGraphViz());
+			session.setAttribute("graph", sim.createGraphViz(map));
 			session.setAttribute("resultsList", listRM);
+			session.setAttribute("map", map);
 		}
 	}
 	

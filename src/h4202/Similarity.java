@@ -225,9 +225,8 @@ public class Similarity {
 		
 	}
 	
-	public String createGraphViz(){
+	public String createGraphViz(HashMap<String, Integer> map){
 		String graph = "";
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		int i = 0, j = 0;
 		String one = "", two = "";
 		String nodes = "var nodes = [";
@@ -253,7 +252,7 @@ public class Similarity {
 			edges += "{from: " + map.get(one) + ", to: " + map.get(two) +" }";
 			++j;
 		}
-		graph = "<script>" + nodes + "];" + edges + "]; var container=document.getElementById('mynetwork'),data={nodes:nodes,edges:edges},options={width:'800px',height:'800px'},network=new vis.Network(container,data,options);</script>";
+		graph = "<script>" + nodes + "];" + edges + "]; var container=document.getElementById('mynetwork'),data={nodes:nodes,edges:edges},options={width:'800px',height:'400px'},network=new vis.Network(container,data,options);</script>";
 		return graph;
 	}
 	

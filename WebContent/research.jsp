@@ -5,6 +5,8 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.TreeSet"%>
+<%@page import="java.util.HashMap" %>
+<%@page import="java.util.Map" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -48,15 +50,19 @@
 			</tr>
 		</table>
 	</div>
+	<h1>Résultats pertinents</h1>
 	<table>
 		<%
+			String imgSrc = "";
 			List<ResultModel> list = (List<ResultModel>) session
 					.getAttribute("resultsList");
 			for (ResultModel s : list) {
+				imgSrc = (s.getImgURL() == null || "".equals(s.getImgURL())) ? 
+						"http://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png" : s.getImgURL();
 		%>
 		<tr>
 
-			<td><a href="<%out.print(s.getUrl());%>"><img src="<%out.print(s.getImgURL());%>" alt=""
+			<td><a href="<%out.print(s.getUrl());%>"><img src="<%out.print(imgSrc);%>" alt=""
 				height="auto" width="150" ></a></td>
 			<td style="text-align: left; vertical-align: top; padding: 20px;"></a>
 				<table>
@@ -101,7 +107,16 @@
 			}
 		%>
 	</table>
-	<div id="mynetwork"></div>
+	<h1>Visualisation du graphe RDF</h1>
+	<div id="mynetwork" style="display: inline-block"></div>
+	<ul style="display: inline-block; vertical-align: top; max-width:20%;">
+		<%
+			HashMap<String, Integer> map = (HashMap<String, Integer>) session.getAttribute("map");
+			for(Map.Entry<String, Integer> entry: map.entrySet()) {
+				out.println("<li>" + entry.getValue() + " --> " + entry.getKey() + "</li>");
+			}
+		%>
+	</ul>
 	<% out.println(session.getAttribute("viz")); %>
 	<% out.println(session.getAttribute("graph")); %>
 </body>
