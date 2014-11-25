@@ -57,7 +57,7 @@
 		<tr>
 
 			<td><a href="<%out.print(s.getUrl());%>"><img src="<%out.print(s.getImgURL());%>" alt=""
-				height="auto" width="150" ></td>
+				height="auto" width="150" ></a></td>
 			<td style="text-align: left; vertical-align: top; padding: 20px;"></a>
 				<table>
 					<tr>
@@ -68,7 +68,7 @@
 						</h2>
 					</tr>
 					<tr>
-						<p>
+						<p style= "font-size:small; font-family:arial,sans-serif">
 							<%
 								out.print(s.getDescription());
 							%>
