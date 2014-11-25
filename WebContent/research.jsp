@@ -79,7 +79,7 @@
 							if (s.getWikipediaLink() != "") {
 						%>
 						<td><a href="<%out.print(s.getWikipediaLink());%>"><img
-								alt="Wikipedia" height="auto" width="50
+								alt="Wikipedia" height="auto" width="50"
 								src="http://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/W-circle.svg/38px-W-circle.svg.png" /></a></td>
 						<%
 							}
