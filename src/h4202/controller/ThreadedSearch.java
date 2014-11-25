@@ -92,6 +92,8 @@ public class ThreadedSearch extends Action {
 				System.out.println(r.toString());
 			}
 			
+			sim.createGraphViz(keyWords+".graph");
+			
 			session.setAttribute("keyWords", keyWords);
 			session.setAttribute("resultsList", rM);
 		}

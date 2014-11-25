@@ -5,8 +5,10 @@ import h4202.controller.BeaverBeverGo;
 import h4202.module2.Triplet;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -49,6 +51,8 @@ public class Similarity {
 //		System.out.println(imageURL);
 //		System.out.println(label);
 //		System.out.println(desc);
+		
+		sim.createGraphViz("teste.graphviz");
 
 	}
 
@@ -186,6 +190,30 @@ public class Similarity {
 			}
 			i++;
 		}
+	}
+	
+	public void createGraphViz(String filename){
+		
+		  try {
+	          File file = new File(filename);
+	          BufferedWriter output = new BufferedWriter(new FileWriter(file));
+	          output.write("digraph sample {");
+	          output.newLine();
+	          
+	          for(SimilarityArc arc : similarityList){
+	        	  
+	        	  output.write(arc.getFirstURL()+" -> "+ arc.getSecondURL() +" [ weight = "+ arc.getSimilarityIndex() + "];");
+	        	  output.newLine();
+	        	  
+	          }
+	          
+	          output.write("}");
+    
+	          output.close();
+	        } catch ( IOException e ) {
+	           e.printStackTrace();
+	        }
+		
 	}
 
 	public Map<String, SortedSet<Triplet>> getMapFiles() {
