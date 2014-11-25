@@ -193,27 +193,68 @@ public class Similarity {
 	}
 	
 	public void createGraphViz(String filename){
+		try {
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			int i = 0;
+			String one = "", two = "";
+			File file = new File(filename);
+			BufferedWriter output = new BufferedWriter(new FileWriter(file));
+			output.write("digraph sample {");
+			output.newLine();
+			for(SimilarityArc arc : similarityList){
+				one = arc.getFirstURL();
+				if(!map.containsKey(one)) {
+					map.put(one, i);
+					++i;
+				}
+				
+				two = arc.getSecondURL();
+				if(!map.containsKey(two)) {
+					map.put(two, i);
+					++i;
+				}
+				
+				output.write(map.get(one)+" -> "+ map.get(two) +" [ weight = "+ arc.getSimilarityIndex() + "];");
+				output.newLine();
+			}
+			output.write("}");
+			output.close();
+		} catch ( IOException e ) {
+			e.printStackTrace();
+		}
 		
-		  try {
-	          File file = new File(filename);
-	          BufferedWriter output = new BufferedWriter(new FileWriter(file));
-	          output.write("digraph sample {");
-	          output.newLine();
-	          
-	          for(SimilarityArc arc : similarityList){
-	        	  
-	        	  output.write(arc.getFirstURL()+" -> "+ arc.getSecondURL() +" [ weight = "+ arc.getSimilarityIndex() + "];");
-	        	  output.newLine();
-	        	  
-	          }
-	          
-	          output.write("}");
-    
-	          output.close();
-	        } catch ( IOException e ) {
-	           e.printStackTrace();
-	        }
-		
+	}
+	
+	public String createGraphViz(){
+		String graph = "";
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		int i = 0, j = 0;
+		String one = "", two = "";
+		String nodes = "var nodes = [";
+		String edges = "var edges = [";
+		for(SimilarityArc arc : similarityList){
+			one = arc.getFirstURL();
+			if(!map.containsKey(one)) {
+				map.put(one, i);
+				if(i != 0) nodes += ",";
+				nodes += "{ id: " + i + ", label: '" + i + "'}";
+				++i;
+			}
+			
+			two = arc.getSecondURL();
+			if(!map.containsKey(two)) {
+				map.put(two, i);
+				if(i != 0) nodes += ",";
+				nodes += "{ id: " + i + ", label: '" + i + "'}";
+				++i;
+			}
+			
+			if(j != 0) edges += ",";
+			edges += "{from: " + map.get(one) + ", to: " + map.get(two) +" }";
+			++j;
+		}
+		graph = "<script>" + nodes + "];" + edges + "]; var container=document.getElementById('mynetwork'),data={nodes:nodes,edges:edges},options={width:'800px',height:'800px'},network=new vis.Network(container,data,options);</script>";
+		return graph;
 	}
 
 	public Map<String, SortedSet<Triplet>> getMapFiles() {

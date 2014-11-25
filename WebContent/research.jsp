@@ -101,6 +101,8 @@
 			}
 		%>
 	</table>
-
+	<div id="mynetwork"></div>
+	<% out.println(session.getAttribute("viz")); %>
+	<% out.println(session.getAttribute("graph")); %>
 </body>
 </html>

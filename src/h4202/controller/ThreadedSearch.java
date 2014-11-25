@@ -5,9 +5,12 @@ import h4202.Similarity;
 import h4202.model.ResultModel;
 import h4202.module2.Triplet;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -92,10 +95,31 @@ public class ThreadedSearch extends Action {
 				System.out.println(r.toString());
 			}
 			
-			sim.createGraphViz(keyWords+".graph");
-			
+			//sim.createGraphViz(keyWords+".graph");
+			String script = "<script>";
+			BufferedReader br;
+		    try {
+		    	br = new BufferedReader(new FileReader("vis.min.js"));
+		        StringBuilder sb = new StringBuilder();
+		        String line = br.readLine();
+
+		        while (line != null) {
+		            sb.append(line);
+		            sb.append(System.lineSeparator());
+		            line = br.readLine();
+		        }
+		        script += sb.toString() + "</script>";
+		    } catch (FileNotFoundException e) {
+		    	
+		    } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    
+		    session.setAttribute("viz", script);
 			session.setAttribute("keyWords", keyWords);
 			session.setAttribute("resultsList", rM);
+			session.setAttribute("graph", sim.createGraphViz());
 		}
 	}
 	
