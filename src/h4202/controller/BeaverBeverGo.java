@@ -17,6 +17,8 @@ public class BeaverBeverGo {
 	public static final String IMAGE= "http://dbpedia.org/ontology/thumbnail";
 	public static final String LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
 	public static final String ABSTRACT = "http://dbpedia.org/ontology/abstract";
+	public static final String WIKIPEDIA_LINK = "http://xmlns.com/foaf/0.1/isPrimaryTopicOf";
+	public static final String HOMEPAGE = "http://xmlns.com/foaf/0.1/homepage";
 	
 	
 	
@@ -81,8 +83,11 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 			
 			SortedSet<Triplet> tripletsSet = Entry.getValue();
 			for(Triplet t : tripletsSet){
+				System.out.println(t.toString());
 				String img="";
 				String desc="";
+				String wikiPage="";
+				String homePage="";
 				if (t.getPredicate().equals(BeaverBeverGo.LABEL)) {
 					String[] keys = keyWord.split("\\s+");
 					for (String s : keys)
@@ -91,6 +96,8 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 					  {
 						  img=searchForSubjectPredicate(map, t.getSubject() , BeaverBeverGo.IMAGE, keyWord);
 						  desc=searchForSubjectPredicate(map, t.getSubject() , BeaverBeverGo.ABSTRACT, keyWord);
+						  wikiPage=searchForSubjectPredicate(map, t.getSubject(), BeaverBeverGo.WIKIPEDIA_LINK, keyWord);
+						  homePage=searchForSubjectPredicate(map, t.getSubject(), BeaverBeverGo.HOMEPAGE, keyWord);
 						  String[] descriptionArray = desc.split("\\s+");
 						  String description="";
 							if (descriptionArray.length<=LIMIT_WORDS) {
@@ -101,7 +108,7 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 								}
 								description=description+"...";
 							}
-						  list.add(new ResultModel(t.getObject(), img, description));
+						  list.add(new ResultModel(t.getObject(), img, description, wikiPage, homePage));
 					  }
 					}
 					

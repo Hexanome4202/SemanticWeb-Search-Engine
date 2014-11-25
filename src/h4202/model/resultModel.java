@@ -9,12 +9,17 @@ public class ResultModel  implements Serializable, Comparable<ResultModel>{
 	private String label;
 	private String imgURL;
 	private String description;
+	private String wikipediaLink;
+	private String homePageLink;
 	
 	
-	public ResultModel(String label, String imgURL, String description) {
+	public ResultModel(String label, String imgURL, String description, String wikipediaLink, String homePage) {
 		this.label = label;
 		this.imgURL = imgURL;
 		this.description = description;
+		this.wikipediaLink=wikipediaLink;
+		this.homePageLink=homePage;
+		
 	}
 
 
@@ -30,6 +35,19 @@ public class ResultModel  implements Serializable, Comparable<ResultModel>{
 
 	public String getDescription() {
 		return description;
+	}
+	
+	
+
+
+	public String getWikipediaLink() {
+		return wikipediaLink;
+	}
+
+	
+
+	public String getHomePageLink() {
+		return homePageLink;
 	}
 
 
