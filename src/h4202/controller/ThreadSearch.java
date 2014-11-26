@@ -1,15 +1,15 @@
 package h4202.controller;
 
+import h4202.GoogleResults;
+import h4202.module2.Entities;
+import h4202.module2.Entities.Pair;
+import h4202.module2.Triplet;
+
 import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.concurrent.Semaphore;
 
 import org.json.simple.JSONObject;
-
-import h4202.GoogleResults;
-import h4202.module2.Entities;
-import h4202.module2.Triplet;
-import h4202.module2.Entities.Pair;
 
 public class ThreadSearch implements Runnable {
 	private JSONObject jsonObject;

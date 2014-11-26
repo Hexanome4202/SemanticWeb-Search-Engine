@@ -105,7 +105,9 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 								  int i =1;
 								  if (t.getObject().toLowerCase().equals(keyWord.toLowerCase())) {
 									i=10;
-								}
+								  }else if(t.getObject().toLowerCase().contains(keyWord.toLowerCase())){
+									  i=5;
+								  }
 								  img=searchForSubjectPredicate(tripletsSet, t.getSubject() , BeaverBeverGo.IMAGE, keyWord);
 								  desc=searchForSubjectPredicate(tripletsSet, t.getSubject() , BeaverBeverGo.ABSTRACT, keyWord);
 								  wikiPage=searchForSubjectPredicate(tripletsSet, t.getSubject(), BeaverBeverGo.WIKIPEDIA_LINK, keyWord);
