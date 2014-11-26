@@ -16,10 +16,10 @@
 	<div style="background-color: #E8E8E8; margin: -10px;">
 		<table align="center">
 			<tr>
-				<td><img
+				<td><a href="./home"><img
 					src="http://images.frandroid.com/wp-content/uploads/2014/01/bridgestone.jpg"
 					style="border-style: ridge; border-width: 5px; border-color: grey; width: 100px; height: auto;"
-					alt="beaver_logo"></td>
+					alt="beaver_logo"></a></td>
 				<td>
 					<h1
 						style="color: green; text-align: center; padding: 25px 25px 25px 25px;">
@@ -109,14 +109,18 @@
 				<table>
 					<tr>
 						<td>
+							<%
+							if (!categories.isEmpty()) {
+							%>
 							<h3>Categories</h3>
-							<ul style="height:50px;overflow-y:scroll;">
+							<ul style="height:135px;overflow-y:scroll;">
 								<%
 								for (String cat : categories) {
 									out.println("<li>" + cat + "</li>");
 								}
 								%>
 							</ul>
+							<% } %>
 						</td>
 					</tr>
 				</table>
