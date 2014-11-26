@@ -12,7 +12,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>BeaverBeverGo</title>
 </head>
-<body>
+<body style="overflow-x:hidden;">
 	<div style="background-color: #E8E8E8; margin: -10px;">
 		<table align="center">
 			<tr>
