@@ -11,7 +11,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +21,7 @@ import java.util.TreeSet;
 
 public class Similarity {
 
+	private static final Double SEUIL_SIMILARITE = 0.1;
 	/**
 	 * A map with the URL of the page as key and a set with the triplets
 	 */
@@ -260,7 +260,7 @@ public class Similarity {
 		i = 0;
 		String extra = ", group: 'max'";
 		for(SimilarityArc arc : similarityList){
-			if(arc.getSimilarityIndex() < 0.01) continue;
+			if(arc.getSimilarityIndex() < SEUIL_SIMILARITE) continue;
 			one = arc.getFirstURL();
 			if(!map.containsKey(one)) {
 				map.put(one, i);
