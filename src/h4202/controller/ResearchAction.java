@@ -34,7 +34,7 @@ public class ResearchAction extends Action {
 		String desc = bv.searchForPredicate(sim.getMapFiles(),
 				BeaverBeverGo.ABSTRACT, keyWords);
 		
-		System.out.println(img + "   " + label + "   " + desc);
+		//System.out.println(img + "   " + label + "   " + desc);
 		
 		session.setAttribute("keyWords", keyWords);
 		session.setAttribute("img", img);

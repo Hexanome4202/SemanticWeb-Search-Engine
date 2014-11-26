@@ -43,7 +43,7 @@ public class Similarity {
 
 		for (SimilarityArc a : sim.getSimilarityList()) {
 
-			System.out.println(a);
+			//System.out.println(a);
 		}
 //		String imageURL=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.IMAGE);
 //		String label=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.LABEL);
@@ -183,7 +183,7 @@ public class Similarity {
 					if (simIndex>=0.00) { //seuil
 						similarityList.add(new SimilarityArc(firstURL,
 								secondURL, simIndex));
-						System.out.println(firstURL+"  " + secondURL + "  " + simIndex);
+						//System.out.println(firstURL+"  " + secondURL + "  " + simIndex);
 					}
 				}
 				j++;
@@ -232,6 +232,7 @@ public class Similarity {
 		String nodes = "var nodes = [";
 		String edges = "var edges = [";
 		for(SimilarityArc arc : similarityList){
+			if(arc.getSimilarityIndex() == 0) continue;
 			one = arc.getFirstURL();
 			if(!map.containsKey(one)) {
 				map.put(one, i);

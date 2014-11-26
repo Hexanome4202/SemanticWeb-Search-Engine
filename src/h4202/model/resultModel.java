@@ -1,6 +1,7 @@
 package h4202.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ResultModel  implements Serializable, Comparable<ResultModel>{
 	
@@ -15,9 +16,10 @@ public class ResultModel  implements Serializable, Comparable<ResultModel>{
 	private String homePageLink;
 	private String url;
 	private double similarityAverage;
+	private List<String> categories;
 	
 	
-	public ResultModel(String label, String imgURL, String description, String wikipediaLink, String homePage, String url, double similarityAverage) {
+	public ResultModel(String label, String imgURL, String description, String wikipediaLink, String homePage, String url, double similarityAverage, List<String> categories) {
 		this.label = label;
 		this.imgURL = imgURL;
 		this.description = description;
@@ -25,7 +27,7 @@ public class ResultModel  implements Serializable, Comparable<ResultModel>{
 		this.homePageLink=homePage;
 		this.url=url;
 		this.similarityAverage=similarityAverage;
-		
+		this.categories = categories;
 	}
 
 
@@ -43,7 +45,9 @@ public class ResultModel  implements Serializable, Comparable<ResultModel>{
 		return description;
 	}
 	
-	
+	public List<String> getCategories() {
+		return this.categories;
+	}
 
 
 	public String getWikipediaLink() {

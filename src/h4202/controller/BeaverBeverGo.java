@@ -6,6 +6,7 @@ import h4202.module2.Triplet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -93,6 +94,7 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 				String desc="";
 				String wikiPage="";
 				String homePage="";
+				List<String> categories = new ArrayList<String>();
 				if (t.getPredicate().equals(BeaverBeverGo.LABEL)) {
 					String[] keys = keyWord.split("\\s+");
 					for (String s : keys)
@@ -104,6 +106,7 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 								  desc=searchForSubjectPredicate(map, t.getSubject() , BeaverBeverGo.ABSTRACT, keyWord);
 								  wikiPage=searchForSubjectPredicate(map, t.getSubject(), BeaverBeverGo.WIKIPEDIA_LINK, keyWord);
 								  homePage=searchForSubjectPredicate(map, t.getSubject(), BeaverBeverGo.HOMEPAGE, keyWord);
+								  categories=searchForSubjectCategories(map, t.getSubject());
 								  String[] descriptionArray = desc.split("\\s+");
 								  String description="";
 									if (descriptionArray.length<=LIMIT_WORDS) {
@@ -114,7 +117,7 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 										}
 										description=description+"...";
 									}
-								  list.add(new ResultModel(t.getObject(), img, description, wikiPage, homePage, url, sim.similatiryAverage(url)));
+								  list.add(new ResultModel(t.getObject(), img, description, wikiPage, homePage, url, sim.similatiryAverage(url), categories));
 							  }
 						}
 					}
@@ -151,4 +154,36 @@ public String searchForSubjectPredicate(Map<String, SortedSet<Triplet>> map,Stri
 		return "";
 	}
 
+	/**
+	 * TODO: pretify categories (i.e. better name...)
+	 * TODO: select 3 best
+	 * @param map
+	 * @param subject
+	 * @return
+	 */
+	public List<String> searchForSubjectCategories(Map<String, SortedSet<Triplet>> map,String subject){
+		HashMap<String, Integer> resultMap = new HashMap<String, Integer>();
+		for (Map.Entry<String, SortedSet<Triplet>> Entry : map.entrySet()) {
+				SortedSet<Triplet> tripletsSet = Entry.getValue();
+				for(Triplet t : tripletsSet){
+					if (t.getSubject().equals(subject)) {
+						if(resultMap.containsKey(t.getObject())) {
+							resultMap.put(t.getObject(), resultMap.get(t.getObject()) + 1);
+						} else {
+							resultMap.put(t.getObject(), 1);
+						}
+					}
+				}
+		}
+		List<String> ret = new ArrayList<String>();
+		String[] splited;
+		for ( String key : resultMap.keySet() ) {
+			if(!key.contains("dbpedia.org") || !key.contains("Category:")) continue;
+			splited = key.split("/");
+			key = splited[splited.length - 1];
+			key = key.replaceAll( "Category:" , "" ).replaceAll("_", " ");
+		    ret.add(key);
+		}
+		return ret;
+	}
 }

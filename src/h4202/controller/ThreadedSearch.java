@@ -107,7 +107,7 @@ public class ThreadedSearch extends Action {
 			Collections.sort(listRM, comparator);
 			
 			for(ResultModel r : listRM){
-				System.out.println(r.toString());
+				//System.out.println(r.toString());
 			}
 			
 			//sim.createGraphViz(keyWords+".graph");

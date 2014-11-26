@@ -50,18 +50,18 @@
 			</tr>
 		</table>
 	</div>
-	<h1>Résultats pertinents</h1>
+	<h1>Results</h1>
 	<table>
 		<%
 			String imgSrc = "";
-			List<ResultModel> list = (List<ResultModel>) session
-					.getAttribute("resultsList");
+			List<ResultModel> list = (List<ResultModel>) session.getAttribute("resultsList");
+			List<String> categories;
 			for (ResultModel s : list) {
+				categories = s.getCategories();
 				imgSrc = (s.getImgURL() == null || "".equals(s.getImgURL())) ? 
 						"http://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png" : s.getImgURL();
 		%>
 		<tr>
-
 			<td><a href="<%out.print(s.getUrl());%>"><img src="<%out.print(imgSrc);%>" alt=""
 				height="auto" width="150" ></a></td>
 			<td style="text-align: left; vertical-align: top; padding: 20px;"></a>
@@ -74,6 +74,7 @@
 						</h2>
 					</tr>
 					<tr>
+						<h3>Abstract</h3>
 						<p style= "font-size:small; font-family:arial,sans-serif">
 							<%
 								out.print(s.getDescription());
@@ -82,7 +83,7 @@
 					</tr>
 					<tr>
 						<%
-							if (s.getWikipediaLink() != "") {
+							if (!"".equals(s.getWikipediaLink())) {
 						%>
 						<td><a href="<%out.print(s.getWikipediaLink());%>"><img
 								alt="Wikipedia" height="auto" width="50"
@@ -102,12 +103,28 @@
 					</tr>
 				</table>
 			</td>
+			<td>
+				<table>
+					<tr>
+						<td>
+							<h3>Categories</h3>
+							<ul style="height:50px;overflow-y:scroll;">
+								<%
+								for (String cat : categories) {
+									out.println("<li>" + cat + "</li>");
+								}
+								%>
+							</ul>
+						</td>
+					</tr>
+				</table>
+			</td>
 		</tr>
 		<%
 			}
 		%>
 	</table>
-	<h1>Visualisation du graphe RDF</h1>
+	<h1>RDF graph</h1>
 	<div id="mynetwork" style="display: inline-block"></div>
 	<ul style="display: inline-block; vertical-align: top; max-width:20%;">
 		<%
