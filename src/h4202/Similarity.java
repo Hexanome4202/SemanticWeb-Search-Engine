@@ -282,7 +282,9 @@ public class Similarity {
 			}
 			
 			if(j != 0) edges += ",";
-			edges += "{from: " + map.get(one) + ", to: " + map.get(two) +", label:"+ arc.getSimilarityIndex() + " }";
+			String index = arc.getSimilarityIndex().toString();
+			index = index.substring(0,5);
+			edges += "{from: " + map.get(one) + ", to: " + map.get(two) +", label:"+ index + " }";
 			++j;
 		}
 		graph = "<script>" + nodes + "];" + edges + "]; var container=document.getElementById('mynetwork'),data={nodes:nodes,edges:edges},options={width:'800px',height:'400px',groups:{max:{color:'red'}}},network=new vis.Network(container,data,options);</script>";
