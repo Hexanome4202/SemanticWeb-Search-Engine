@@ -83,6 +83,7 @@
 						</p>
 					</tr>
 					<tr>
+						<u>To read more:</u>
 						<%
 							if (!"".equals(s.getWikipediaLink())) {
 						%>
@@ -125,11 +126,13 @@
 			}
 		%>
 	</table>
+	<hr />
 	<h1>Meaningful articles and link between them</h1>
 	<div id="mynetwork" style="display: inline-block"></div>
 	<ul style="display: inline-block; vertical-align: top; max-width:20%;">
 		<%
 			HashMap<String, Integer> map = (HashMap<String, Integer>) session.getAttribute("map");
+			if(map.size() == 0) out.println("<p>Nothing to see here, move on!</p>");
 			for(Map.Entry<String, Integer> entry: map.entrySet()) {
 				out.println("<li>" + entry.getValue() + " --> <a href=\""+entry.getKey()+"\">" + entry.getKey() + "</a></li>");
 			}

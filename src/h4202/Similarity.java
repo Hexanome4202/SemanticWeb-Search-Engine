@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -228,16 +229,44 @@ public class Similarity {
 	public String createGraphViz(HashMap<String, Integer> map){
 		String graph = "";
 		int i = 0, j = 0;
+		double valMax = 0;
 		String one = "", two = "";
 		String nodes = "var nodes = [";
 		String edges = "var edges = [";
+		String urlMax = "";
+		
+		List<String> urls = new ArrayList<String>();
+		urls.addAll(this.mapFiles.keySet());
+		
+		double[] vals = new double[this.mapFiles.keySet().size()];
+		for(i = 0; i < vals.length; ++i) vals[i] = 0;
+		i=0;
+		for(String elem : urls) {
+			for(SimilarityArc arc : similarityList){
+				if(arc.getFirstURL().equals(elem) )
+					vals[i] += arc.getSimilarityIndex();
+			}
+			++i;
+		}
+		
+		for(i = 0; i < vals.length; ++i) {
+			if(vals[i] > valMax) {
+				valMax = vals[i];
+				urlMax = urls.get(i);
+			}
+		}
+		
+		i = 0;
+		String extra = ", group: 'max'";
 		for(SimilarityArc arc : similarityList){
 			if(arc.getSimilarityIndex() < 0.01) continue;
 			one = arc.getFirstURL();
 			if(!map.containsKey(one)) {
 				map.put(one, i);
 				if(i != 0) nodes += ",";
-				nodes += "{ id: " + i + ", label: '" + i + "'}";
+				nodes += "{ id: " + i + ", label: '" + i + "'";
+				if(one.equals(urlMax)) nodes += extra;
+				nodes += "}";
 				++i;
 			}
 			
@@ -245,7 +274,9 @@ public class Similarity {
 			if(!map.containsKey(two)) {
 				map.put(two, i);
 				if(i != 0) nodes += ",";
-				nodes += "{ id: " + i + ", label: '" + i + "'}";
+				nodes += "{ id: " + i + ", label: '" + i + "'";
+				if(two.equals(urlMax)) nodes += extra;
+				nodes += "}";
 				++i;
 			}
 			
@@ -253,7 +284,7 @@ public class Similarity {
 			edges += "{from: " + map.get(one) + ", to: " + map.get(two) +" }";
 			++j;
 		}
-		graph = "<script>" + nodes + "];" + edges + "]; var container=document.getElementById('mynetwork'),data={nodes:nodes,edges:edges},options={width:'800px',height:'400px'},network=new vis.Network(container,data,options);</script>";
+		graph = "<script>" + nodes + "];" + edges + "]; var container=document.getElementById('mynetwork'),data={nodes:nodes,edges:edges},options={width:'800px',height:'400px',groups:{max:{color:'red'}}},network=new vis.Network(container,data,options);</script>";
 		return graph;
 	}
 	
