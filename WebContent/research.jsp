@@ -56,6 +56,7 @@
 			String imgSrc = "";
 			List<ResultModel> list = (List<ResultModel>) session.getAttribute("resultsList");
 			List<String> categories;
+			if(list.size() == 0) out.println("<p>We are deeply sorry but we didn't find anything interesting.<br /><i>You can still try to find some useful information using the links next to the graph below. If no results are displayed, try to be more specific next time :)</i><p>");
 			for (ResultModel s : list) {
 				categories = s.getCategories();
 				imgSrc = (s.getImgURL() == null || "".equals(s.getImgURL())) ? 
@@ -85,7 +86,7 @@
 						<%
 							if (!"".equals(s.getWikipediaLink())) {
 						%>
-						<td><a href="<%out.print(s.getWikipediaLink());%>"><img
+						<td><a title="Wikipedia" href="<%out.print(s.getWikipediaLink());%>"><img
 								alt="Wikipedia" height="auto" width="50"
 								src="http://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/W-circle.svg/38px-W-circle.svg.png" /></a></td>
 						<%
@@ -94,7 +95,7 @@
 						<%
 							if (s.getHomePageLink() != "") {
 						%>
-						<td><a href="<%out.print(s.getHomePageLink());%>"><img
+						<td><a title="Home page" href="<%out.print(s.getHomePageLink());%>"><img
 								alt="HomePage" height="auto" width="40"
 								src="https://s3.amazonaws.com/saveoneverything_assets/assets/images/icons/home_services_icon.png" /></a></td>
 						<%
@@ -124,13 +125,13 @@
 			}
 		%>
 	</table>
-	<h1>RDF graph</h1>
+	<h1>Meaningful articles and link between them</h1>
 	<div id="mynetwork" style="display: inline-block"></div>
 	<ul style="display: inline-block; vertical-align: top; max-width:20%;">
 		<%
 			HashMap<String, Integer> map = (HashMap<String, Integer>) session.getAttribute("map");
 			for(Map.Entry<String, Integer> entry: map.entrySet()) {
-				out.println("<li>" + entry.getValue() + " --> " + entry.getKey() + "</li>");
+				out.println("<li>" + entry.getValue() + " --> <a href=\""+entry.getKey()+"\">" + entry.getKey() + "</a></li>");
 			}
 		%>
 	</ul>

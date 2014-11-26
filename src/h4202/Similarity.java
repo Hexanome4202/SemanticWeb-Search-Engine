@@ -232,7 +232,7 @@ public class Similarity {
 		String nodes = "var nodes = [";
 		String edges = "var edges = [";
 		for(SimilarityArc arc : similarityList){
-			if(arc.getSimilarityIndex() == 0) continue;
+			if(arc.getSimilarityIndex() < 0.01) continue;
 			one = arc.getFirstURL();
 			if(!map.containsKey(one)) {
 				map.put(one, i);

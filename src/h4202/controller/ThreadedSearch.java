@@ -47,7 +47,7 @@ public class ThreadedSearch extends Action {
 		
 		if(keyWords != null) {
 			String json = GoogleResults.search(keyWords, 1);
-			File f = new File(keyWords+".ser");
+			File f = new File(keyWords.toLowerCase()+".ser");
 			if(f.exists() && !f.isDirectory()){
 				url_triplets = deserializeGraph(keyWords);
 			}
@@ -65,11 +65,13 @@ public class ThreadedSearch extends Action {
 				 
 				// loop array
 				JSONArray links = (JSONArray) jsonObject.get("items");
-				Iterator<JSONObject> iterator = links.iterator();
-				while (iterator.hasNext()) {
-					jsonObject = iterator.next();
-					new Thread(new ThreadSearch(jsonObject, url_triplets, semaphore, hashMapSemaphore)).start();
-					++i;
+				if(links != null) {
+					Iterator<JSONObject> iterator = links.iterator();
+					while (iterator.hasNext()) {
+						jsonObject = iterator.next();
+						new Thread(new ThreadSearch(jsonObject, url_triplets, semaphore, hashMapSemaphore)).start();
+						++i;
+					}
 				}
 				
 			} catch (ParseException e) {
