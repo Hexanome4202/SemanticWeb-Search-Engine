@@ -6,12 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>BeaverBeverGo</title>
 </head>
-<body>
+<body style="margin-top:150px;">
 
-	<table align="center">
+	<table align="center" style="margin-bottom:35px;">
 		<tr>
-			<td> <img src="http://images.frandroid.com/wp-content/uploads/2014/01/bridgestone.jpg" style="border-style: ridge; border-width:5px; border-color:grey; width: 100px; height: auto;" alt="beaver_logo"> </td>
-			<td> <h1 style="color: green; text-align: center; padding: 25px 25px 25px 25px;"> BeaverBeverGo </h1> </td>
+			<td> <img src="http://images.frandroid.com/wp-content/uploads/2014/01/bridgestone.jpg" style="border-style: ridge; border-width:5px; border-color:grey; width: 150px; height: auto;" alt="beaver_logo"> </td>
+			<td> <h1 style="color: green; text-align: center; padding: 25px 25px 25px 25px; letter-spacing: 5px;"> BeaverBeverGo </h1> </td>
 		</tr>
 	</table>
 	
@@ -22,7 +22,7 @@
 				<td
 					style="border-style: solid none solid solid; border-color: green; border-width: 1px;">
 					<input type="text" name="keyWords" id="keyWords"
-					style="width: 150px; border: 0px solid; height: 17px; position: relative;">
+					style="width: 350px; border: 0px solid; height: 17px; position: relative;">
 				</td>
 				<td style="border-style: solid; border-color: green; border-width: 1px;  background-color: green;">
 					<input type="image" value=""
