@@ -283,7 +283,8 @@ public class Similarity {
 			
 			if(j != 0) edges += ",";
 			String index = arc.getSimilarityIndex().toString();
-			index = index.substring(0,5);
+			if(index.length() > 5)
+				index = index.substring(0,5);
 			edges += "{from: " + map.get(one) + ", to: " + map.get(two) +", label:"+ index + " }";
 			++j;
 		}
