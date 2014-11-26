@@ -102,6 +102,10 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 						if(!Arrays.asList(PREPOSITIONS).contains(s)){
 							  if (t.getSubject().toLowerCase().contains(s.toLowerCase()))
 							  {
+								  int i =1;
+								  if (t.getObject().toLowerCase().equals(keyWord.toLowerCase())) {
+									i=10;
+								}
 								  img=searchForSubjectPredicate(tripletsSet, t.getSubject() , BeaverBeverGo.IMAGE, keyWord);
 								  desc=searchForSubjectPredicate(tripletsSet, t.getSubject() , BeaverBeverGo.ABSTRACT, keyWord);
 								  wikiPage=searchForSubjectPredicate(tripletsSet, t.getSubject(), BeaverBeverGo.WIKIPEDIA_LINK, keyWord);
@@ -117,7 +121,7 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 										}
 										description=description+"...";
 									}
-								  list.add(new ResultModel(t.getObject(), img, description, wikiPage, homePage, url, sim.similatiryAverage(url), categories));
+								  list.add(new ResultModel(t.getObject(), img, description, wikiPage, homePage, url, sim.similatiryAverage(url)*i, categories));
 							  }
 						}
 					}
