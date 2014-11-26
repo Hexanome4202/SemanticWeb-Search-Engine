@@ -102,10 +102,10 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 						if(!Arrays.asList(PREPOSITIONS).contains(s)){
 							  if (t.getSubject().toLowerCase().contains(s.toLowerCase()))
 							  {
-								  img=searchForSubjectPredicate(map, t.getSubject() , BeaverBeverGo.IMAGE, keyWord);
-								  desc=searchForSubjectPredicate(map, t.getSubject() , BeaverBeverGo.ABSTRACT, keyWord);
-								  wikiPage=searchForSubjectPredicate(map, t.getSubject(), BeaverBeverGo.WIKIPEDIA_LINK, keyWord);
-								  homePage=searchForSubjectPredicate(map, t.getSubject(), BeaverBeverGo.HOMEPAGE, keyWord);
+								  img=searchForSubjectPredicate(tripletsSet, t.getSubject() , BeaverBeverGo.IMAGE, keyWord);
+								  desc=searchForSubjectPredicate(tripletsSet, t.getSubject() , BeaverBeverGo.ABSTRACT, keyWord);
+								  wikiPage=searchForSubjectPredicate(tripletsSet, t.getSubject(), BeaverBeverGo.WIKIPEDIA_LINK, keyWord);
+								  homePage=searchForSubjectPredicate(tripletsSet, t.getSubject(), BeaverBeverGo.HOMEPAGE, keyWord);
 								  categories=searchForSubjectCategories(map, t.getSubject());
 								  String[] descriptionArray = desc.split("\\s+");
 								  String description="";
@@ -130,13 +130,13 @@ public List<String> searchForPredicateList(Map<String, SortedSet<Triplet>> map, 
 		return list;
 	}
 	
-public String searchForSubjectPredicate(Map<String, SortedSet<Triplet>> map,String subject, String predicate,String keyWord){
+public String searchForSubjectPredicate(SortedSet<Triplet> tripletsSet,String subject, String predicate,String keyWord){
 		
 		
 		
-		for (Map.Entry<String, SortedSet<Triplet>> Entry : map.entrySet()) {
+		//for (Map.Entry<String, SortedSet<Triplet>> Entry : map.entrySet()) {
 			
-				SortedSet<Triplet> tripletsSet = Entry.getValue();
+				//SortedSet<Triplet> tripletsSet = Entry.getValue();
 				for(Triplet t : tripletsSet){
 					if (t.getPredicate().equals(predicate) && t.getSubject().equals(subject)) {
 						String[] keys = keyWord.split("\\s+");
@@ -150,7 +150,7 @@ public String searchForSubjectPredicate(Map<String, SortedSet<Triplet>> map,Stri
 						
 					}
 				}
-		}
+		//}
 		return "";
 	}
 

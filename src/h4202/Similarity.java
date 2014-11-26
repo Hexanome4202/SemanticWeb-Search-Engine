@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -281,7 +282,7 @@ public class Similarity {
 			}
 			
 			if(j != 0) edges += ",";
-			edges += "{from: " + map.get(one) + ", to: " + map.get(two) +" }";
+			edges += "{from: " + map.get(one) + ", to: " + map.get(two) +", label:"+ arc.getSimilarityIndex() + " }";
 			++j;
 		}
 		graph = "<script>" + nodes + "];" + edges + "]; var container=document.getElementById('mynetwork'),data={nodes:nodes,edges:edges},options={width:'800px',height:'400px',groups:{max:{color:'red'}}},network=new vis.Network(container,data,options);</script>";
