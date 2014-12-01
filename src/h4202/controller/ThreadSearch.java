@@ -1,6 +1,6 @@
 package h4202.controller;
 
-import h4202.GoogleResults;
+import h4202.module1.GoogleResults;
 import h4202.module2.Entities;
 import h4202.module2.Entities.Pair;
 import h4202.module2.Triplet;
@@ -11,6 +11,11 @@ import java.util.concurrent.Semaphore;
 
 import org.json.simple.JSONObject;
 
+/**
+ * For one google result, looks for associated text and then creates the RDF graph corresponding to its entities
+ * @author Admin
+ *
+ */
 public class ThreadSearch implements Runnable {
 	private JSONObject jsonObject;
 	private Semaphore semaphoreFin;

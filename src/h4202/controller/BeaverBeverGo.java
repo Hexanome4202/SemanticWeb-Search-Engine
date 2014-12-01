@@ -1,8 +1,8 @@
 package h4202.controller;
 
-import h4202.Similarity;
 import h4202.model.ResultModel;
 import h4202.module2.Triplet;
+import h4202.module3.Similarity;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,9 +1,9 @@
 package h4202.controller;
 
-import h4202.GoogleResults;
-import h4202.Similarity;
 import h4202.model.ResultModel;
+import h4202.module1.GoogleResults;
 import h4202.module2.Triplet;
+import h4202.module3.Similarity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,9 +36,6 @@ public class ThreadedSearch extends Action {
 	
 
 	@Override
-	/**
-	 * TODO: oh god, it's so dirty... It obviously needs a big refactoring
-	 */
 	public void execute(HttpServletRequest request, HttpSession session) {
 		//long startTime = System.nanoTime();
 		HashMap<String, SortedSet<Triplet>> url_triplets = new HashMap<String, SortedSet<Triplet>>();
@@ -92,16 +89,14 @@ public class ThreadedSearch extends Action {
 			cache(url_triplets, keyWords);
 			
 			// ----- PART II & III
-			
-			Similarity sim = new Similarity(url_triplets);//Similarity graph construction with the map of URLs and triplets
-			
-			BeaverBeverGo bv = new BeaverBeverGo();//Responsable for the traitement of the results that we will show
+			Similarity sim = new Similarity(url_triplets);
+			BeaverBeverGo bv = new BeaverBeverGo();
+			sim.fillSimilarityList();
 			
 			Set<ResultModel> rM=bv.searchForResultList(sim.getMapFiles(), keyWords, sim);
 
 			List<ResultModel> listRM = new ArrayList<>(rM);
 			
-			//Order the results by their similarity average
 			Comparator<ResultModel> comparator = new Comparator<ResultModel>() {
 			    public int compare(ResultModel c1, ResultModel c2) {
 			        return (int) ((c2.getSimilarityAverage() - c1.getSimilarityAverage())*10000000);
@@ -110,7 +105,11 @@ public class ThreadedSearch extends Action {
 
 			Collections.sort(listRM, comparator);
 			
-			//Insertion of the script responsable for the similarity graph display
+			for(ResultModel r : listRM){
+				System.out.println(r.toString());
+			}
+			
+			//sim.createGraphViz(keyWords+".graph");
 			String script = "<script>";
 			BufferedReader br;
 		    try {
@@ -131,7 +130,6 @@ public class ThreadedSearch extends Action {
 				e.printStackTrace();
 			}
 		    
-		    //J'ai pas compris ça...
 		    HashMap<String, Integer> map = new HashMap<String, Integer>();
 		    
 		    session.setAttribute("viz", script);

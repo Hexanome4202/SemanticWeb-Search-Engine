@@ -1,4 +1,4 @@
-package h4202;
+package h4202.module3;
 
 
 import h4202.module2.Triplet;
@@ -26,7 +26,7 @@ import java.util.TreeSet;
 public class Similarity {
 
 	/**
-	 * Constante representant le seuil de similarité choisit
+	 * Constante representant le seuil de similaritï¿½ choisit
 	 */
 	private static final Double SEUIL_SIMILARITE = 0.13;
 	/**

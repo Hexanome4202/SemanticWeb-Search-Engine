@@ -1,7 +1,7 @@
 /**
  * 
  */
-package h4202;
+package h4202.module3;
 
 /**
  * @author Felipe
