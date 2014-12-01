@@ -28,7 +28,7 @@ public class Similarity {
 	/**
 	 * Constante representant le seuil de similarité choisit
 	 */
-	private static final Double SEUIL_SIMILARITE = 0.1;
+	private static final Double SEUIL_SIMILARITE = 0.13;
 	/**
 	 * A map with the URL of the page as key and a set with the triplets
 	 */
