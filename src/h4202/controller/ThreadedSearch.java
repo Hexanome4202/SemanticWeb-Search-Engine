@@ -92,14 +92,16 @@ public class ThreadedSearch extends Action {
 			cache(url_triplets, keyWords);
 			
 			// ----- PART II & III
-			Similarity sim = new Similarity(url_triplets);
-			BeaverBeverGo bv = new BeaverBeverGo();
-			sim.fillSimilarityList();
+			
+			Similarity sim = new Similarity(url_triplets);//Similarity graph construction with the map of URLs and triplets
+			
+			BeaverBeverGo bv = new BeaverBeverGo();//Responsable for the traitement of the results that we will show
 			
 			Set<ResultModel> rM=bv.searchForResultList(sim.getMapFiles(), keyWords, sim);
 
 			List<ResultModel> listRM = new ArrayList<>(rM);
 			
+			//Order the results by their similarity average
 			Comparator<ResultModel> comparator = new Comparator<ResultModel>() {
 			    public int compare(ResultModel c1, ResultModel c2) {
 			        return (int) ((c2.getSimilarityAverage() - c1.getSimilarityAverage())*10000000);
@@ -108,11 +110,7 @@ public class ThreadedSearch extends Action {
 
 			Collections.sort(listRM, comparator);
 			
-			for(ResultModel r : listRM){
-				System.out.println(r.toString());
-			}
-			
-			//sim.createGraphViz(keyWords+".graph");
+			//Insertion of the script responsable for the similarity graph display
 			String script = "<script>";
 			BufferedReader br;
 		    try {
@@ -133,6 +131,7 @@ public class ThreadedSearch extends Action {
 				e.printStackTrace();
 			}
 		    
+		    //J'ai pas compris ça...
 		    HashMap<String, Integer> map = new HashMap<String, Integer>();
 		    
 		    session.setAttribute("viz", script);
