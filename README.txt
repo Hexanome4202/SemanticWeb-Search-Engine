@@ -1,4 +1,4 @@
-Procédure à suivre pour utiliser le projet :
+﻿Procédure à suivre pour utiliser le projet :
 ===========================================
 
 ## Prérequis :
@@ -23,6 +23,9 @@ Procédure à suivre pour utiliser le projet :
 - Si une popup vous indique que les ports que le serveur veut utiliser sont déjà occupés, changez-les.
 	-> Vue Servers, double clic sur le serveur
 	-> Ports : changer les ports posant problème
+
+- Ajoutez le contenu du dossier "js" à l'intérieur de votre dossier Eclipse
+
 	
 - Lancez le serveur depuis le menu contextuel obtenu après un clic droit sur ledit serveur.
 
