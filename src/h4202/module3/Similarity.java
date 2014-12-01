@@ -1,6 +1,7 @@
-package h4202;
+package h4202.module3;
 
 
+import h4202.controller.BeaverBeverGo;
 import h4202.module2.Triplet;
 
 import java.io.BufferedReader;
@@ -18,16 +19,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-/**
- * This class is responsable for the calcul of the similarities between the resources(triplets) of different URLs
- * @author Felipe
- *
- */
 public class Similarity {
 
-	/**
-	 * Constante representant le seuil de similarité choisit
-	 */
 	private static final Double SEUIL_SIMILARITE = 0.1;
 	/**
 	 * A map with the URL of the page as key and a set with the triplets
@@ -39,14 +32,35 @@ public class Similarity {
 	 */
 	private ArrayList<SimilarityArc> similarityList = new ArrayList<SimilarityArc>();
 
-
 	/**
-	 * Similarity contructor with the mapFiles given
-	 * @param hashMap
+	 * 
+	 * @param args
 	 */
+	public static void main(String[] args) {
+
+		Similarity sim = new Similarity();
+		BeaverBeverGo bv = new BeaverBeverGo();
+		sim.readAll();
+		sim.fillSimilarityList();
+
+		for (SimilarityArc a : sim.getSimilarityList()) {
+
+			//System.out.println(a);
+		}
+//		String imageURL=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.IMAGE);
+//		String label=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.LABEL);
+//		String desc=bv.searchForPredicate(sim.getMapFiles(), BeaverBeverGo.ABSTRACT);
+//		System.out.println(imageURL);
+//		System.out.println(label);
+//		System.out.println(desc);
+		
+		sim.createGraphViz("teste.graphviz");
+
+	}
+
+
 	public Similarity(HashMap<String, SortedSet<Triplet>> hashMap) {
 		this.mapFiles = hashMap;
-		fillSimilarityList();
 	}
 
 	public Similarity() {
@@ -55,11 +69,10 @@ public class Similarity {
 
 
 	/**
-	 * Responsable for creating the triplets from a given .txt file (we no longer use this method)
+	 * 
 	 * @param path
 	 * @throws IOException
 	 */
-	@Deprecated
 	private void readFile(String path) throws IOException {
 
 		FileInputStream fis = new FileInputStream(path);
@@ -86,10 +99,8 @@ public class Similarity {
 	}
 
 	/**
-	 * Calls the readFile method for every text file in the current folder (we no longer use this method)
-	 * directly give the map<String, Triplets> to the constructor
+	 * Calls the readFile method for every text file in the current folder
 	 */
-	@Deprecated
 	public void readAll() {
 
 		File folder = new File(".");//faire attention au chemin pour la partie web
@@ -109,7 +120,7 @@ public class Similarity {
 	}
 
 	/**
-	 * Calculates the union of two sets
+	 * 
 	 * @param setA
 	 * @param setB
 	 * @return
@@ -121,7 +132,7 @@ public class Similarity {
 	}
 
 	/**
-	 * Calculates the intersection of two sets
+	 * 
 	 * @param setA the first set
 	 * @param setB the second set
 	 * @return the intersection of the two set
@@ -135,7 +146,7 @@ public class Similarity {
 	}
 
 	/**
-	 * Calculates the similarity of two sets with the Jaccard method
+	 * 
 	 * @param setA the first set
 	 * @param setB the second set
 	 * @return the union of the two sets
@@ -148,7 +159,7 @@ public class Similarity {
 	}
 
 	/**
-	 * Fills the similarity list after charging the mapFiles
+	 * 
 	 */
 	public void fillSimilarityList() {
 
@@ -215,12 +226,7 @@ public class Similarity {
 		}
 		
 	}
-
-	/**
-	 * Responsable pour la creation d'un graph graphviz a partir d'un HashMap<String, Integer>
-	 * @param map
-	 * @return
-	 */
+	
 	public String createGraphViz(HashMap<String, Integer> map){
 		String graph = "";
 		int i = 0, j = 0;
@@ -286,12 +292,6 @@ public class Similarity {
 		return graph;
 	}
 	
-	
-	/**
-	 * Calculates the similarity average of a given url from the mapFiles
-	 * @param url
-	 * @return
-	 */
 	public double similatiryAverage(String url){
 
 		double sum=0;

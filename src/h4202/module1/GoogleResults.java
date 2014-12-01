@@ -1,4 +1,4 @@
-package h4202;
+package h4202.module1;
 
 import h4202.model.GoogleElement;
 
@@ -34,6 +34,7 @@ public class GoogleResults {
 	}
 	
 	/**
+	 * Static function used to perform a google search using keywords set by the user and the page number
 	 * @param keywords used for the google search
 	 * @param pageNum number of the result page
 	 * @return
@@ -70,7 +71,7 @@ public class GoogleResults {
 	}
 	
 	/**
-	 * TODO: Clean text
+	 * Get the elements from the JSON file and creates GoogleElements objects containing the URL and their text
 	 * @param json
 	 * @return a Google element created with the html
 	 */
@@ -108,7 +109,7 @@ public class GoogleResults {
 		return elements;
 	}
 	/**
-	 * Uses Alchemy
+	 * Uses Alchemy to get the text from an URL
 	 * TODO: try to make it faster
 	 * @param link
 	 * @return the text from the html web page
@@ -156,6 +157,8 @@ public class GoogleResults {
 	
 	/**
 	 * Local version
+	 * Not used
+	 * @deprecated
 	 * @param link
 	 * @return the text from the html web page
 	 */
@@ -226,8 +229,4 @@ public class GoogleResults {
 			e.printStackTrace();
 		}
 	 }
-	
-	public static String cleanText(String text) {
-		return text;
-	}
 }
